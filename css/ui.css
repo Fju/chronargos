@@ -1,0 +1,228 @@
+* {
+	box-sizing: border-box;
+}
+
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url('font/Source Sans Pro.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+	
+	font-family: 'Source Sans Pro Regular', Arial, sans-serif;
+	color: #fff;
+	background: #272932;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+
+	-webkit-user-select: none; /* Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+}
+
+.flex-fill {
+	flex-grow: 1;
+}
+
+.accent {
+	/* magenta = #ee2c88, orange = #f7912b, yellow= #eed52c, green=#31BD48, blue = #325BFC*/
+	background: rgb(238,44,136);
+	background: linear-gradient(90deg, rgba(238,44,136,1) 0%, rgba(247,145,43,1) 100%);
+}
+
+.header {
+	width: 100%;
+	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.header-title {
+	font-weight: bold;
+	font-size: 1.25em;
+	
+	margin-left: 0.5em;
+}
+
+.header-button {
+	cursor: pointer;
+	height: 2.5em;
+	width: 2.5em;
+	line-height: 2.5em;
+	text-align: center;
+
+}
+.header-button:hover, .header-button:active {
+	background: rgba(0, 0, 0, 0.3);
+}
+
+.content {
+	flex-grow: 1;
+
+	display: flex;
+	flex-direction: column;
+	align-content: stretch;
+}
+.content-header {
+	
+}
+.content-body {
+	flex-grow: 1;
+	position: relative;
+
+	overflow: hidden;
+}
+
+.content-timeline-bar {
+	width: 1.5em;
+	background: #1F2028;
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+}
+.content-scroll {
+	position: absolute;
+	left: 1.5em;
+	top: 0;
+	right: 0;
+	height: 100%;
+}
+.content-timestamp {
+	position: absolute;
+	height: 1px;
+	background: #1F2028;
+	width: 100%;
+}
+.content-timestamp[data-time] {
+	height: 2px;
+}
+.content-timestamp::before {
+	content: attr(data-time);
+	color: #A5A8C2;
+	position: absolute;
+	font-size: 0.9em;
+
+	transform: rotate(-90deg);
+	transform-origin: 50% 50%;
+	height: 2em;
+	line-height: 2em;
+	left: -2em;
+	top: -1em; /* half of height for centering vertically */
+	text-align: center;
+}
+
+.content-column {
+	flex-grow: 1;
+	min-width: 60px;
+	max-width: 72px;
+
+	padding: 0.5em;
+	text-align: center;
+
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+.content-column-icon {
+	font-size: 2.25em;
+	margin-bottom: 4px;
+}
+.content-column-source {
+	font-size: 0.75em;
+	margin-bottom: 0.5rem;
+}
+
+.content-column-container {
+	flex-grow: 1;
+
+	position: relative;
+	overflow-y: hidden;
+	overflow-x: visible;
+}
+
+/* magenta = #ee2c88, orange = #f7912b, yellow= #eed52c, green=#31BD48, blue = #325BFC*/
+.content-column:nth-child(5n+1) .content-column-item {
+	background: #ee2c88;
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+.content-column:nth-child(5n+2) .content-column-item {
+	background: #31bd48;
+}
+.content-column:nth-child(5n+3) .content-column-item {
+	background: #eed52c;
+}
+.content-column:nth-child(5n+4) .content-column-item {
+	background: #325bfc;
+}
+.content-column:nth-child(5n+0) .content-column-item {
+	background: #f7912b;
+}
+
+.content-column-item {
+	width: calc(100% - 6px);
+
+	height: 200px;
+
+	/*border: 2px solid #325BFC;*/
+
+	border-radius: 5px;
+	/*box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);*/
+
+	position: absolute;
+	left: 3px;
+	
+	cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+
+	transition: border-width 100ms;
+}
+.content-column-item:hover {
+	border-width: 4px;
+}
+.content-column-item:active {
+	cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+
+.footer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+
+	color: #b3b3b3;
+}
+.footer-button {
+	max-width: 6em;
+	padding: 0.5em;
+	text-align: center;	
+	cursor: pointer;
+}
+.footer-button:hover {
+	background: rgba(0, 0, 0, 0.3);
+}
+
+/*#drag {
+	border-radius: 50%;
+	width: 5em;
+	height: 5em;
+
+	background: #f33;
+	color: white;
+	text-align: center;
+
+	cursor: pointer;
+}*/

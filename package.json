@@ -1,0 +1,17 @@
+{
+  "name": "chronargos",
+  "version": "0.0.1",
+  "description": "Assistant for chornologically sorting videos from multiple local sources, that supports dragging and dropping files into other applications.",
+  "author": "github.com/Fju",
+  "homepage": "github.com/Fju/chronargos",
+  "bugs": "github.com/Fju/chronargos/issues",
+  "license": "GNU GPLv3"
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "main": "main.js",
+  "devDependencies": {
+    "electron": "^4.0.1"
+  }
+}
