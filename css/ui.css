@@ -97,6 +97,8 @@ body {
 	top: 0;
 	right: 0;
 	height: 100%;
+
+	/*transition: top 150ms;*/
 }
 .content-timestamp {
 	position: absolute;
@@ -120,6 +122,25 @@ body {
 	left: -2em;
 	top: -1em; /* half of height for centering vertically */
 	text-align: center;
+}
+
+.content-item {
+	position: absolute;
+	
+	width: 3.5em;
+	height: 250px;
+
+	border-radius: 5px;
+	background: #aaa;
+	box-shadow: 0 0 7px rgba(0, 0, 0, 0.8);
+}
+.content-item[data-filetype="movie"] {
+	background: #ee2c88;
+	background: linear-gradient(0deg, #ee2c88 0%, #df2cee 100%);
+}
+.content-item[data-filetype="sound"] {
+	background: #eed52c;
+	background: linear-gradient(0deg, #f7912b 0%, #eed52c 100%);
 }
 
 .content-column {
