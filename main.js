@@ -6,7 +6,7 @@ let win;
 
 function createWindow() {
 	// Create the browser window.
-	win = new BrowserWindow({ width: 280, height: 640 });
+	win = new BrowserWindow({ width: 280 + 450, height: 640 });
 
 	// and load the index.html of the app.
 	win.loadFile('index.html');
