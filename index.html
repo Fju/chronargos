@@ -5,28 +5,32 @@
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 <body>
-	<div class="content">
-		<div class="content-header">
-			<div class="content-header-item">
-				<i class="fas fa-video"></i>
-				Canon 750DS
-			</div>
-			<div class="content-header-item">
-				<i class="fas fa-video"></i>
-				Canon 750DS
-			</div>
-		</div>
-		<div class="content-body">
-			<div class="content-timeline-bar"></div>
-			<div class="content-scroll">
-				<div class="content-timestamp" data-time="12:00" style="top: 50px;"></div>
-				<div class="content-timestamp" style="top: 75px;"></div>
-				<div class="content-timestamp" style="top: 100px;"></div>
-				<div class="content-timestamp" style="top: 125px;"></div>
-				<div class="content-timestamp" data-time="12:10" style="top: 150px"></div>
 
-				<div class="content-item" style="top: 40px; left: 40px;" data-filetype="movie"></div>
-				<div class="content-item" style="top: 100px; left: 120px; height: 60px;" data-filetype="sound"></div>
+	<div class="header">
+		
+		<div class="header-item">
+			<i class="fas fa-video"></i>
+			Canon 750DS
+		</div>
+		<div class="header-item">
+			<i class="fas fa-video"></i>
+			Canon 750DS
+		</div>
+	</div>
+	<div class="timeline"></div>
+	<div class="body">
+		<div class="scroll-container" id="scroll-container">
+			<!--<div class="timestamp-container">
+				<div class="timestamp" data-time="12:00" style="top: 50px;"></div>
+				<div class="timestamp" style="top: 75px;"></div>
+				<div class="timestamp" style="top: 100px;"></div>
+				<div class="timestamp" style="top: 125px;"></div>
+				<div class="timestamp" data-time="12:10" style="top: 150px"></div>
+			</div>-->
+			<div class="column-container">
+				<div class="column">
+					<!-- contains items -->
+				</div>
 			</div>
 		</div>
 	</div>
@@ -39,5 +43,6 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript" src="js/files.js"></script>
 <script type="text/javascript" src="js/ui.js"></script>
 </html>
