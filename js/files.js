@@ -22,12 +22,15 @@ function openDirectory() {
 	// no directory opened
 	if (!dirs) return;
 	
-	var i, promises = [];
+	var i, result = [];
 	for (i = 0; i < dirs.length; ++i) {
-		promises.push(loadDir(dirs[i]));
+		result.push({
+			promise: loadDir(dirs[i]),
+			dirname: path.basename(dirs[i])
+		});
 	}
 
-	return promises;
+	return result;
 }
 
 
@@ -57,6 +60,6 @@ async function loadDir(parent_dir, elements, depth) {
 			});
 		}
 	}
-	return elements
+	return elements;
 }
 

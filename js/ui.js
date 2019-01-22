@@ -10,6 +10,9 @@ draggableItem.ondragstart = (e) => {
 	ipcRenderer.send('ondragstart', '/test.txt');
 }*/
 
+function vue_template_header_item() {
+	return }
+
 function updatePosition() {
 	var elements = document.querySelectorAll('.content-item'), i;
 	for (i = 0; i != elements.length; ++i) {
@@ -18,7 +21,7 @@ function updatePosition() {
 }
 
 
-var scrollContainer = document.querySelector('.content-scroll');
+var columnContainer = document.getElementById('column-container');
 //var bodyContainer = document.querySelector('.content-body');
 var offset = 0;
 
@@ -37,16 +40,42 @@ document.addEventListener('wheel', (e) => {
 	console.log(e.ctrlKey);
 
 });
+
+
+var columns = [
+	{
+		type: 'audio',
+		title: 'test',
+		items: [
+			0, 1, 2	
+		]
+   	},
+]
+
+var header = new Vue({
+	el: '#header',
+	data: {
+		cols: columns
+	}
+});
+var column_container = new Vue({
+	el: '#column-container',
+	data: {
+		cols: columns
+	}	
+});
+
+
 document.getElementById('open-dir').addEventListener('click', () => {
-	openDirectory().forEach(promise => {
+	openDirectory().forEach(element => {
 		// create new column
-		
-		var 
-		console.log('Create new column');
-		
-		promise.then(data => {
+		console.log(element.dirname);
+
+		element.promise.then(data => {
+			header_item.type = 'video';
 			console.log('successful', data);
 		}).catch(err => {
+			columnContainer.removeChild(column);
 			console.log('error', err);
 		});			
 	});

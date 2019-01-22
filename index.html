@@ -6,15 +6,12 @@
 </head>
 <body>
 
-	<div class="header">
-		
-		<div class="header-item">
-			<i class="fas fa-video"></i>
-			Canon 750DS
-		</div>
-		<div class="header-item">
-			<i class="fas fa-video"></i>
-			Canon 750DS
+	<div class="header" id="header">
+		<div v-for="col in cols" v-if="col" class="header-item">
+			<i v-if="col.type === 'video'" class="fas fa-camera"></i>
+			<i v-else-if="col.type === 'audio'" class="fas fa-music"></i>
+			<i v-else class="fas fa-sync-alt"></i>
+			{{ col.title }}
 		</div>
 	</div>
 	<div class="timeline"></div>
@@ -27,9 +24,9 @@
 				<div class="timestamp" style="top: 125px;"></div>
 				<div class="timestamp" data-time="12:10" style="top: 150px"></div>
 			</div>-->
-			<div class="column-container">
-				<div class="column">
-					<!-- contains items -->
+			<div class="column-container" id="column-container">
+				<div v-for="col in cols" v-if="col" class="column">
+					<div v-for="item in col.items" class="column-item">{{ item }}</div>
 				</div>
 			</div>
 		</div>
@@ -43,6 +40,7 @@
 		</div>
 	</div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
 <script type="text/javascript" src="js/files.js"></script>
 <script type="text/javascript" src="js/ui.js"></script>
 </html>

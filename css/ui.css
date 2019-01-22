@@ -31,6 +31,21 @@ body {
 	/* TODO: define grid areas here */
 }
 
+.fa-sync-alt {
+	animation-duration: 2s;
+	animation-name: spin;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+}
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
 .flex-fill {
 	flex-grow: 1;
 }
