@@ -71,6 +71,9 @@ body {
 .body {
 	grid-area: 2 / 3 / 2 / 2;
 	overflow-x: auto;
+	overflow-y: hidden;
+
+	position: relative;
 }
 .header, .column-container {
 	display: flex;
@@ -91,10 +94,25 @@ body {
 	font-size: 1.5rem;
 }
 .scroll-container {
-	position: absolute;	
+	position: absolute;
+	transition: top 150ms;	
 }
+.column-container {
+	position: relative;
+	height: 100%;
+}
+.column {
+	position: relative;
+	height: 100%;
+	padding: 0 5px;
+}
+.column-item {
+	position: absolute;
+	border-radius: 5px;
+	background: #f7912b;
+	box-shadow: 0 0 7px rgba(0, 0, 0, 0.8);
 
-
+}
 /* TODO: update to new format
 .content-timestamp {
 	position: absolute;
@@ -121,15 +139,8 @@ body {
 }*/
 
 
-.content-item {
+.column-item {
 	position: absolute;
-	
-	width: 3em;
-	height: 250px;
-
-	border-radius: 5px;
-	background: #aaa;
-	box-shadow: 0 0 7px rgba(0, 0, 0, 0.8);
 }
 .content-item[data-filetype="movie"] {
 	background: #ee2c88;

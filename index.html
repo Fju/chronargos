@@ -7,16 +7,13 @@
 <body>
 
 	<div class="header" id="header">
-		<div v-for="col in cols" v-if="col" class="header-item">
-			<i v-if="col.type === 'video'" class="fas fa-camera"></i>
-			<i v-else-if="col.type === 'audio'" class="fas fa-music"></i>
-			<i v-else class="fas fa-sync-alt"></i>
-			{{ col.title }}
+		<div v-for="dir in directories" v-if="dir" class="header-item">
+			{{ dir.dirname }}
 		</div>
 	</div>
 	<div class="timeline"></div>
 	<div class="body">
-		<div class="scroll-container" id="scroll-container">
+		<div class="scroll-container" id="scroll-container" v-bind:style="{ height: 100 * zoom + '%', top: -100 * (zoom - 1) * offset + '%' }">
 			<!--<div class="timestamp-container">
 				<div class="timestamp" data-time="12:00" style="top: 50px;"></div>
 				<div class="timestamp" style="top: 75px;"></div>
@@ -25,8 +22,13 @@
 				<div class="timestamp" data-time="12:10" style="top: 150px"></div>
 			</div>-->
 			<div class="column-container" id="column-container">
-				<div v-for="col in cols" v-if="col" class="column">
-					<div v-for="item in col.items" class="column-item">{{ item }}</div>
+				<div v-for="dir in directories" v-if="dir" class="column" v-bind:style="{ width: (item_width + item_gaps) * dir.numCols + item_gaps + 'px' }">
+					<div v-for="item in dir.items" class="column-item" v-bind:style="{
+						width:	item_width + 'px',
+						left:	item_gaps + item.row * (item_width + item_gaps) + 'px',
+						top:	100 * (item.start - range_start) / (range_end - range_start) + '%',
+						bottom: 100 * (1 - (item.end - range_start) / (range_end - range_start)) + '%'
+					}" :data-path="item.path"></div>
 				</div>
 			</div>
 		</div>

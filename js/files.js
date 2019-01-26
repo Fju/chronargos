@@ -24,6 +24,9 @@ function openDirectory() {
 	
 	var i, result = [];
 	for (i = 0; i < dirs.length; ++i) {
+		// parse items
+
+
 		result.push({
 			promise: loadDir(dirs[i]),
 			dirname: path.basename(dirs[i])
@@ -50,13 +53,14 @@ async function loadDir(parent_dir, elements, depth) {
 		if (stat.isDirectory() && depth <= MAX_DEPTH) {
 			await loadDir(file, elements, depth + 1);
 		} else if (stat.isFile() && SUPPORTED_FILETYPES.indexOf(extension) >= 0) {
+			var type = extension === 'mp4' ? 'video' : 'audio';
 			var info = await ffprobe(file, { path: ffprobeStatic.path });
 			
 			elements.push({
 				birthtime: Math.round(stat.birthtimeMs),
 				duration: parseInt(info.streams[0].duration),
 				path: file,
-				type: extension
+				type: type
 			});
 		}
 	}
