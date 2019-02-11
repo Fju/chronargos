@@ -11,43 +11,35 @@ draggableItem.ondragstart = (e) => {
 }*/
 
 
-function updatePosition() {
-	var elements = document.querySelectorAll('.content-item'), i;
-	for (i = 0; i != elements.length; ++i) {
-		elements[i].style.top = 5;
-	}
-}
-
-
 var directories = [
 	 {
-	 	dirname: 'test',
-		numCols: 2,
+	 	name: 'test',
+		type: 'audio',
+		state: 'loading',
 		items: [
-			{ path: 'asdf', start: 0, end: 1.5, row: 0 },
-			{ path: 'test', start: 0.2, end: 1, row: 1 }	
+			{ path: 'asdf', start: 0.4, end: 0.8 },
 		]
 	 },
-	{
-	 	dirname: 'st',
-		numCols: 1,
+	 {
+	 	name: 'test2',
+		type: 'video',
+		state: 'loading',
 		items: [
-			{ path: 'asdf', start: 1.5, end: 3, row: 0 }	
+			{ path: 'asdf', start: 0, end: 0.5, row: 0 },
+			{ path: 'test', start: 0.55, end: 1, row: 1 }	
 		]
 	 }
+
 ];
 
-var offset = 0;
-var scroll_container = new Vue({
-	el: '#scroll-container',
+var main = new Vue({
+	el: '#main',
 	data: {
 		directories: directories,
 		zoom: 1.0,
 		offset: 0,
-		item_width: 44,
-		item_gaps: 8,
 		range_start: 0,
-		range_end: 3
+		range_end: 1
 	}	
 });
 
@@ -56,14 +48,18 @@ document.addEventListener('wheel', (e) => {
 	e.preventDefault();
 
 	// TODO: implement zooming
-	console.log(e.ctrlKey);
-	if (e.ctrlKey) {
-		scroll_container.zoom = Math.max(1, scroll_container.zoom * (e.deltaY < 0 ? 1.2 : 0.8));
-	} else {
-		var sign = e.deltaY > 0 ? 1 : -1;
+	
+	var sign = e.deltaY > 0 ? 1 : -1;
 
-		scroll_container.offset = Math.min(1, Math.max(0, scroll_container.offset + sign/10));
+	if (e.ctrlKey) {
+		main.zoom = Math.max(1, main.zoom * Math.pow(1.2, -sign));
+	} else {
+		//main.offset = Math.min(1, Math.max(0, main.offset + sign/10));
 	}
+
+	main.range_end = 1 / main.zoom;
+
+	//console.log(main.zoom, main.offset);
 });
 
 
@@ -84,7 +80,6 @@ document.getElementById('open-dir').addEventListener('click', () => {
 		console.log(element.dirname);
 
 		element.promise.then(data => {
-			console.log('successful', data);
 			var newColumn = {
 				type: '',
 				title: element.dirname,
