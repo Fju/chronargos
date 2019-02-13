@@ -76,7 +76,6 @@ body {
 }
 .main-column-body {
 	position: relative;
-	z-index: -1;
 	flex-grow: 1;
 }
 .main .main-column:last-child > * {
@@ -95,15 +94,14 @@ body {
 
 	box-shadow: 0 0 7px rgba(0, 0, 0, 0.4);
 
-	left: 7px;
-	right: 7px;
+	left: 10px;
+	right: 10px;
 }
 .main-column-item:active {
 	cursor: grabbing;
     cursor: -moz-grabbing;
     cursor: -webkit-grabbing;
 }
-
 .main-column[data-dir-type="video"] .main-column-item {
 	background: #ee2c88;
 }
