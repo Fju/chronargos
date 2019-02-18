@@ -2,27 +2,28 @@
 
 <head>
 	<link rel="stylesheet" href="css/ui.css" type="text/css" />
-	<!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 <body>
-	<div class="timeline"></div>
-	<div class="main" id="main">
-		<div class="main-column" v-for="dir in directories" :data-dir-type="dir.type">
-			<div class="main-column-header">
-				<div class="main-column-header-icon">
-					<i v-if="dir.type == 'audio'" class="fas fa-music"></i>
-					<i v-if="dir.type == 'video'" class="fas fa-video"></i>
-				</div>
-				<span>{{ dir.name }}</span>
+	<div class="header" id="header">
+		<div class="header-item" v-for="item in getHeaderItems()" :style="item.style">
+			<div class="header-icon">
+				<i v-if="item.types.indexOf('audio') >= 0" class="fas fa-music"></i>
+				<i v-if="item.types.indexOf('video') >= 0" class="fas fa-video"></i>
 			</div>
-			<div v-on:mousemove="onMousemove" class="main-column-body" id="main-column-body">
-				<div v-for="file in dir.items" :style="{
-						top: (file.start - window_start) / (window_end - window_start) * 100 + '%',
-						height: (file.end - file.start) / (window_end - window_start) * 100 + '%'
-					}" class="main-column-item">
-				</div>				
-			</div>
-		</div>	
+			<span>{{ item.name }}</span>
+		</div>
+	</div>
+	<div class="main" id="main" v-on:mousemove="onMousemove">
+		<div class="timeline">
+			<!--<div class="timeline-item timeline-item-bold">
+				<span>12:00</span>
+			</div>-->
+		</div>
+		<div class="main-column" v-for="dir in getMainItems(this)" :style="dir.style">
+			<div v-for="file in dir.files" :style="file.style" class="main-item" :data-path="file.path" :data-type="file.type">
+			</div>				
+		</div>
 	</div>
 	<div class="footer">
 		<div class="footer-button" id="open-dir">
