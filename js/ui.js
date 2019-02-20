@@ -10,7 +10,7 @@ draggableItem.ondragstart = (e) => {
 	ipcRenderer.send('ondragstart', '/test.txt');
 }*/
 const COL_PADDING = 6;
-const COL_ITEM_WIDTH = 48;
+const COL_ITEM_WIDTH = 40;
 
 var directories = [
 	 {
@@ -18,11 +18,11 @@ var directories = [
 		types: ['audio'],
 		state: 'loading',
 		files: [
-			{ path: 'asdf', start: 0.4, end: 0.8, type: 'audio' },
-			{ path: 'asd', start: 0.3, end: 0.35, type: 'audio' }
+			{ path: 'asdf', start: '12:00', end: '12:30', type: 'audio' },
+			{ path: 'asd', start: '14:00', end: '15:00', type: 'audio' }
 		]
 	 },
-	 {
+	 /*{
 	 	name: 'test2',
 		types: ['video', 'audio'],
 		state: 'loading',
@@ -30,8 +30,11 @@ var directories = [
 			{ path: 'asdf', start: 0, end: 0.5, type: 'video' },
 			{ path: 'test', start: 0.55, end: 1, type: 'audio' }	
 		]
-	 }
+	 }*/
 ];
+
+
+
 
 var main = new Vue({
 	el: '#main',
@@ -79,7 +82,49 @@ var main = new Vue({
 					style: { width: col_width }
 				}
 			});			
+		},
+		getTimelineItems: (self) => {
+			var range = self.window_end - self.window_start;
+
+			if (range <= 0) {
+				return [];
+			}
+			var nice_powers = [1000, 60000, 3600000]; // 1 second, 1 minute, 1 hour (unit: milliseconds)
+			var nice_steps = [0.5, 1, 2, 5, 10, 15]; // nice step sizes
+
+			//var norm_range = range * Math.pow(10, -Math.floor(Math.log10(range)));
+	
+			var step = 0;
+			var i = 0, j = 0;
+			for (i = 0, j = 0; i + j < nice_powers.length + nice_steps.length; i = (i + 1) % nice_steps.length) {
+				step = nice_powers[j] * nice_steps[i];
+				console.log(step);
+				if (range / step < 10) {
+					break;	
+				}
+
+				if (i === nice_steps.length - 1) ++j;
+			}
+
+			var timestamps = [];
+
+			for (var t = Math.ceil(self.window_start / step) * step; t <= self.window_end; t += step) {
+				var style = {
+					top: (t - self.window_start) / (self.window_end - self.window_start) * 100 + '%'
+				}
+				var date = new Date(t);
+
+				timestamps.push({
+					style: style,
+					time: date.getUTCHours() + ':' + date.getUTCMinutes()
+				});
+			}
+
+			//console.log(step);
+		
+			return timestamps;
 		}
+
 	}	
 });
 
@@ -103,6 +148,36 @@ var header = new Vue({
 		}
 	}
 });
+
+function parseDates() {
+	var date_min = 0, date_max = 0;
+	directories.forEach(dir =>  {
+		dir.files = dir.files.map(f => {
+			var start = new Date('2019-01-02 ' + f.start);
+			var end = new Date('2019-01-02 ' + f.end);
+
+			f.start = start.getTime();
+			f.end = end.getTime();
+
+			if (date_min === 0 || date_min > f.start) date_min = f.start;
+			if (date_max === 0 || date_max < f.end) date_max = f.end;
+
+			return f;
+		});
+	});
+
+	console.log(directories);
+
+	main.window_start = date_min;
+	main.range_start = date_min;
+
+	main.window_end = date_max;
+	main.range_end = date_max;
+
+	main.zoom = 1;
+}
+parseDates();
+
 
 //document.getElementById('main').addEventListener('mousemove', (e) => {
 //	var body = document.querySelector('.main-column-body');

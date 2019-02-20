@@ -6,19 +6,20 @@
 </head>
 <body>
 	<div class="header" id="header">
-		<div class="header-item" v-for="item in getHeaderItems()" :style="item.style">
+		<div class="header-item" v-for="dir in getHeaderItems()" :style="dir.style">
+			<!-- TODO: position multiple icons correctly -->
 			<div class="header-icon">
-				<i v-if="item.types.indexOf('audio') >= 0" class="fas fa-music"></i>
-				<i v-if="item.types.indexOf('video') >= 0" class="fas fa-video"></i>
+				<i v-if="dir.types.indexOf('audio') >= 0" class="fas fa-music"></i>
+				<i v-if="dir.types.indexOf('video') >= 0" class="fas fa-video"></i>
 			</div>
-			<span>{{ item.name }}</span>
+			<span>{{ dir.name }}</span>
 		</div>
 	</div>
 	<div class="main" id="main" v-on:mousemove="onMousemove">
 		<div class="timeline">
-			<!--<div class="timeline-item timeline-item-bold">
-				<span>12:00</span>
-			</div>-->
+			<div class="timeline-item timeline-item-bold" v-for="t in getTimelineItems(this)" :style="t.style">
+				<span>{{ t.time }}</span>
+			</div>
 		</div>
 		<div class="main-column" v-for="dir in getMainItems(this)" :style="dir.style">
 			<div v-for="file in dir.files" :style="file.style" class="main-item" :data-path="file.path" :data-type="file.type">
