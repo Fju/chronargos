@@ -40,12 +40,12 @@ var main = new Vue({
 	el: '#main',
 	data: {
 		directories: directories,
-		zoom: 2.0,
+		zoom: 1.0,
 		offset: 0,
 		window_start: 0,
-		window_end: 0.5,
+		window_end: 0,
 		range_start: 0,
-		range_end: 1,
+		range_end: 0,
 		mouse_pos_y: 0
 	},
 	methods: {
@@ -55,7 +55,11 @@ var main = new Vue({
 		getMainItems: (self) => {
 			// store as final variable to use inside forEach function
 			var window_start = self.window_start, window_end = self.window_end;
-			console.log(this);
+			
+			if (window_end - window_start <= 0) {
+				return [];
+			}
+
 			return this.directories.map(dir => {
 				//console.log(dir);
 				var col_width = dir.types.length * (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING;
@@ -98,7 +102,6 @@ var main = new Vue({
 			var i = 0, j = 0;
 			for (i = 0, j = 0; i + j < nice_powers.length + nice_steps.length; i = (i + 1) % nice_steps.length) {
 				step = nice_powers[j] * nice_steps[i];
-				console.log(step);
 				if (range / step < 10) {
 					break;	
 				}
@@ -114,9 +117,22 @@ var main = new Vue({
 				}
 				var date = new Date(t);
 
+				var hours = date.getUTCHours();
+				var minutes = date.getUTCMinutes();
+				var seconds = date.getUTCSeconds();
+
+				hours = (hours >= 10 ? '' : '0') + hours;
+				minutes = (minutes >= 10 ? '' : '0') + minutes;
+				seconds = (seconds >= 10 ? '' : '0') + seconds;
+
+				var time = hours + ':' + minutes;
+				if (step < 60 * 1000) {
+					time += ':' + seconds;
+				}
+
 				timestamps.push({
 					style: style,
-					time: date.getUTCHours() + ':' + date.getUTCMinutes()
+					time: time
 				});
 			}
 
@@ -166,7 +182,7 @@ function parseDates() {
 		});
 	});
 
-	console.log(directories);
+	//console.log(directories);
 
 	main.window_start = date_min;
 	main.range_start = date_min;
@@ -221,17 +237,18 @@ document.addEventListener('wheel', (e) => {
 	
 		//console.log('zoom', main.zoom, main.window_start, main.window_end);
 	} else {
+		var step = window_height * sign * 0.08;
 		if (sign > 0) {
 			// scroll down, limit the window end
-			main.window_end = Math.min(main.range_end, main.window_end + (1 / main.zoom) * sign * 0.1);
+			main.window_end = Math.min(main.range_end, main.window_end + step);
 			main.window_start = main.window_end - window_height;
 		} else {
 			// scroll up, limit the window start
-			main.window_start = Math.max(main.range_start, main.window_start + (1 / main.zoom) * sign * 0.1);
+			main.window_start = Math.max(main.range_start, main.window_start + step);
 			main.window_end = main.window_start + window_height;
 
 		}
-		//console.log('scroll', main.window_start, main.window_end);
+		console.log('scroll', main.window_start, main.window_end);
 	}
 });
 
