@@ -50,6 +50,22 @@ var main = new Vue({
 		onMousemove: (e) => {
 			main.mouse_pos_y = e.offsetY / e.target.clientHeight;
 		},
+		onClick: (e) => {
+			var target = e.target;
+			if (target.className === 'main-item') {
+				var start = parseInt(target.getAttribute('data-start'));
+				var end = parseInt(target.getAttribute('data-end'));
+
+				console.log(start, end);
+				if (!isNaN(start) && !isNaN(end)) {
+					main.window_start = start;
+					main.window_end = end;
+
+					main.zoom = (main.range_end - main.range_start) / (end - start);
+					console.log(main.zoom);
+				}
+			}
+		},
 		getMainItems: (self) => {
 			// store as final variable to use inside forEach function
 			var window_start = self.window_start, window_end = self.window_end;
@@ -70,6 +86,8 @@ var main = new Vue({
 					return {
 						path: file.path,
 						type: file.type,
+						start: file.start,
+						end: file.end,
 						style: {
 							top: top * 100 + '%',
 							left: left + 'px',

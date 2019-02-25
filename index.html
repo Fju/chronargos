@@ -18,14 +18,14 @@
 			</div>
 		</div>
 	</div>
-	<div class="main" id="main" v-on:mousemove="onMousemove">
+	<div class="main" id="main" v-on:mousemove="onMousemove" v-on:click="onClick">
 		<div class="timeline">
 			<div class="timeline-item timeline-item-bold" v-for="t in getTimelineItems(this)" :style="t.style">
 				<span>{{ t.time }}</span>
 			</div>
 		</div>
 		<div class="main-column" v-for="dir in getMainItems(this)" :style="dir.style">
-			<div v-for="file in dir.files" :style="file.style" class="main-item" :data-path="file.path" :data-type="file.type">
+			<div v-for="file in dir.files" :style="file.style" class="main-item" :data-path="file.path" :data-type="file.type" :data-start="file.start" :data-end="file.end">
 			</div>				
 		</div>
 	</div>
