@@ -13,16 +13,18 @@ const COL_PADDING = 6;
 const COL_ITEM_WIDTH = 40;
 
 var directories = [
-	 /*{
+	 {
 	 	name: 'test',
 		types: ['audio'],
 		state: 'loading',
-		files: [
-			{ path: 'asdf', start: '12:00', end: '12:30', type: 'audio' },
-			{ path: 'asd', start: '14:00', end: '15:00', type: 'audio' }
-		]
+		files: {
+			'audio': [
+				{ path: 'asdf', start: 0, end: 0.03 },
+				{ path: 'asd', start: 0.045, end: 0.08 }
+			]
+		}
 	 },
-	 {
+	 /*{
 	 	name: 'test2',
 		types: ['video', 'audio'],
 		state: 'loading',
@@ -33,17 +35,16 @@ var directories = [
 	 }*/
 ];
 
-
 var main = new Vue({
 	el: '#main',
 	data: {
 		directories: directories,
-		zoom: 1.0,
+		zoom: 2.0,
 		offset: 0,
 		window_start: 0,
-		window_end: 0,
+		window_end: 0.5,
 		range_start: 0,
-		range_end: 0,
+		range_end: 1,
 		mouse_pos_y: 0
 	},
 	methods: {
@@ -56,13 +57,11 @@ var main = new Vue({
 				var start = parseInt(target.getAttribute('data-start'));
 				var end = parseInt(target.getAttribute('data-end'));
 
-				console.log(start, end);
 				if (!isNaN(start) && !isNaN(end)) {
 					main.window_start = start;
 					main.window_end = end;
 
 					main.zoom = (main.range_end - main.range_start) / (end - start);
-					console.log(main.zoom);
 				}
 			}
 		},
@@ -74,29 +73,67 @@ var main = new Vue({
 				return [];
 			}
 
+			var min_height = 0.1;
 			return this.directories.map(dir => {
-				//console.log(dir);
-				var col_width = dir.types.length * (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING;
-				var files = dir.files.map(file => {
-					var top = (file.start - window_start) / (window_end - window_start);
-					var left = dir.types.indexOf(file.type) * (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING;
-					var height = (file.end - file.start) / (window_end - window_start);
+				var col_width = (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING;
 
-					//console.log(top, height);
+				if (typeof dir.files !== 'object') {
 					return {
-						path: file.path,
-						type: file.type,
-						start: file.start,
-						end: file.end,
-						style: {
-							top: top * 100 + '%',
-							left: left + 'px',
-							height: height * 100 + '%',
-							width: COL_ITEM_WIDTH + 'px',							
-						}
+						files: [],
+				   		style: { width: col_width }
 					}
-				});
+				}
 				
+				var files = [];
+				var i = 0, type;
+				for (type in dir.files) {
+					for (var j = 0; j < dir.files[type].length; ++j) {
+						var file = dir.files[type][j];
+
+						var top = (file.start - window_start) / (window_end - window_start);				
+						var height = (file.end - file.start) / (window_end - window_start);
+
+						var new_item = {
+							type: type,
+							start: file.start,
+							end: file.end,
+							group: false,
+						}
+
+						for (var k = j + 1; k < dir.files[type].length; ++k) {
+							var file_next = dir.files[type][k];
+							var top_next = (file_next.start - window_start) / (window_end - window_start);
+							var height_next = (file_next.end - file_next.start) / (window_end - window_start);
+
+							if (top + Math.max(min_height, height) > top_next) {
+								// items overlap group together
+								
+								new_item.group = true;
+								new_item.end = file_next.end;
+								height = top_next - top + height_next;
+
+							} else break;
+						}
+						j = k - 1;
+
+						console.log(new_item);
+
+						if (!new_item.group) {
+							new_item.path = file.path;
+						}
+						new_item.style = {
+							top: top * 100 + '%',
+							height: height * 100 + '%',
+							left: (i * (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING) + 'px',
+							width: COL_ITEM_WIDTH + 'px'
+						};
+						
+						files.push(new_item);
+					}
+					i++;
+				}
+
+				var col_width = i * (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING;				
 				return {
 					files: files,
 					style: { width: col_width }
@@ -168,12 +205,16 @@ var header = new Vue({
 	methods: {
 		getHeaderItems: () => {
 			var data = [];
-			this.directories.forEach(element => {
-				var width = element.types.length * (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING;
+			this.directories.forEach(dir => {
+				if (typeof dir.files !== 'object') return;
+
+				var types = Object.keys(dir.files);
+				var width = Math.max(1, types.length) * (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING;
+				
 				data.push({
-					name: element.name,
-					types: element.types,
-					state: element.state,
+					name: dir.name,
+					types: types,
+					state: dir.state,
 					style: { width: width + 'px' }
 				});
 			});
@@ -209,7 +250,6 @@ function parseDates() {
 
 	main.zoom = 1;
 }
-parseDates();
 
 
 //document.getElementById('main').addEventListener('mousemove', (e) => {
@@ -288,12 +328,11 @@ document.getElementById('open-dir').addEventListener('click', () => {
 			var range_start = main.range_start;
 			var range_end = main.range_end;
 
-			var files = [];
+			var files = {};
 
 			for (item of data) {
-				console.log(item);
-				// add type of item to the column's type list
-				if (new_dir.types.indexOf(item.type) < 0) new_dir.types.push(item.type);
+				// add 
+				if (!(item.type in files)) files[item.type] = [];
 
 				var start = item.birthtime;
 				var end = start + item.duration * 1000;
@@ -305,15 +344,12 @@ document.getElementById('open-dir').addEventListener('click', () => {
 					range_end = end;
 				}
 
-				files.push({
+				files[item.type].push({
 					path: item.path,
 					start: start,
-					end: end,
-					type: item.type
+					end: end
 				});
 			}
-
-			console.log(range_start, range_end);
 
 			main.range_start = range_start;
 			main.range_end = range_end;
@@ -323,17 +359,13 @@ document.getElementById('open-dir').addEventListener('click', () => {
 			new_dir.files = files;
 			new_dir.state = 'done';
 
-			main.$forceUpdate();
+			console.log(files);
+			//main.$forceUpdate();
 			header.$forceUpdate();
-
-			/*columns.push({
-				type: 'audio',
-				title: element.dirname,
-				items: data
-			});*/
 		}).catch(err => {
 			//columnContainer.removeChild(column);
 			console.log('error', err);
+			new_dir.state = 'error';
 		});			
 	});
 });

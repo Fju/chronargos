@@ -63,6 +63,7 @@ body {
 .header-state {
 	height: 2px;
 	position: relative;
+	width: 100%;
 }
 .header-state-loader {
 	background: #6363ff;
@@ -72,6 +73,13 @@ body {
 	right: 0;
 	bottom: 0;
 	animation: header-state-loader-anim 1s infinite;
+}
+.header-state-loader[data-state="error"] {
+	background: #f33;
+	animation: none;
+}
+.header-state-loader[data-state="done"] {
+	display: none;
 }
 @keyframes header-state-loader-anim {
 	0% {

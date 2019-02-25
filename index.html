@@ -14,7 +14,7 @@
 			</div>
 			<span>{{ dir.name }}</span>
 			<div class="header-state">
-				<div class="header-state-loader" v-if="dir.state === 'loading'"></div>
+				<div class="header-state-loader" :data-state="dir.state"></div>
 			</div>
 		</div>
 	</div>
