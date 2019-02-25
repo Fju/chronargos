@@ -13,7 +13,7 @@ const COL_PADDING = 6;
 const COL_ITEM_WIDTH = 40;
 
 var directories = [
-	 {
+	 /*{
 	 	name: 'test',
 		types: ['audio'],
 		state: 'loading',
@@ -22,7 +22,7 @@ var directories = [
 			{ path: 'asd', start: '14:00', end: '15:00', type: 'audio' }
 		]
 	 },
-	 /*{
+	 {
 	 	name: 'test2',
 		types: ['video', 'audio'],
 		state: 'loading',
@@ -32,8 +32,6 @@ var directories = [
 		]
 	 }*/
 ];
-
-
 
 
 var main = new Vue({
@@ -157,6 +155,7 @@ var header = new Vue({
 				data.push({
 					name: element.name,
 					types: element.types,
+					state: element.state,
 					style: { width: width + 'px' }
 				});
 			});
@@ -237,7 +236,7 @@ document.addEventListener('wheel', (e) => {
 	
 		//console.log('zoom', main.zoom, main.window_start, main.window_end);
 	} else {
-		var step = window_height * sign * 0.08;
+		var step = window_height * sign * 0.05;
 		if (sign > 0) {
 			// scroll down, limit the window end
 			main.window_end = Math.min(main.range_end, main.window_end + step);
@@ -248,7 +247,7 @@ document.addEventListener('wheel', (e) => {
 			main.window_end = main.window_start + window_height;
 
 		}
-		console.log('scroll', main.window_start, main.window_end);
+		//console.log('scroll', main.window_start, main.window_end);
 	}
 });
 
@@ -256,21 +255,58 @@ document.addEventListener('wheel', (e) => {
 document.getElementById('open-dir').addEventListener('click', () => {
 	openDirectory().forEach(element => {
 		// create new column
-		console.log(element.dirname);
+		var new_dir = {
+			name: element.dirname,
+			types: [],
+			state: 'loading' // initialize in loading state to show loader animation
+		};
+
+		main.directories.push(new_dir);
+
+		main.$forceUpdate();
+		header.$forceUpdate();
 
 		element.promise.then(data => {
-			var newColumn = {
-				type: '',
-				title: element.dirname,
-				items: []
-			};
+			var range_start = main.range_start;
+			var range_end = main.range_end;
 
-			var types = [];
+			var files = [];
 
 			for (item of data) {
-				if (types.indexOf(item.type) < 0) types.push(item.type);
+				console.log(item);
+				// add type of item to the column's type list
+				if (new_dir.types.indexOf(item.type) < 0) new_dir.types.push(item.type);
+
+				var start = item.birthtime;
+				var end = start + item.duration * 1000;
+				if (range_start === 0 || range_start > start) {
+					// update if current start is bigger than this files start to find the minimum
+					range_start = start;
+				}
+				if (range_end === 0 || range_end < end) {
+					range_end = end;
+				}
+
+				files.push({
+					path: item.path,
+					start: start,
+					end: end,
+					type: item.type
+				});
 			}
-			console.log(types);
+
+			console.log(range_start, range_end);
+
+			main.range_start = range_start;
+			main.range_end = range_end;
+			main.window_start = range_start;
+			main.window_end = range_end;
+			
+			new_dir.files = files;
+			new_dir.state = 'done';
+
+			main.$forceUpdate();
+			header.$forceUpdate();
 
 			/*columns.push({
 				type: 'audio',

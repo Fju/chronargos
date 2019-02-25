@@ -10,10 +10,12 @@
 		<div class="header-item" v-for="dir in getHeaderItems()" :style="dir.style">
 			<!-- TODO: position multiple icons correctly -->
 			<div class="header-icon">
-				<i v-if="dir.types.indexOf('audio') >= 0" class="fas fa-music"></i>
-				<i v-if="dir.types.indexOf('video') >= 0" class="fas fa-video"></i>
+				<!--<i v-for="type in dir.types" :class="['fas','fa-' + type]"></i>-->
 			</div>
 			<span>{{ dir.name }}</span>
+			<div class="header-state">
+				<div class="header-state-loader" v-if="dir.state === 'loading'"></div>
+			</div>
 		</div>
 	</div>
 	<div class="main" id="main" v-on:mousemove="onMousemove">

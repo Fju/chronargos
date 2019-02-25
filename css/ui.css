@@ -51,11 +51,41 @@ body {
 .header-item {
 	font-size: 0.8em;
 	border-left: 0.5px solid rgba(255, 255, 255, 0.1);
-	padding: 0.25em 0.5em;
+}
+.header-item span {
+	margin: 3px 0.5em;
 }
 .header-icon {
 	font-size: 2em;
 	margin-bottom: 3px;
+}
+
+.header-state {
+	height: 2px;
+	position: relative;
+}
+.header-state-loader {
+	background: #6363ff;
+	position: absolute;
+	top: 0;	
+	left: 0;
+	right: 0;
+	bottom: 0;
+	animation: header-state-loader-anim 1s infinite;
+}
+@keyframes header-state-loader-anim {
+	0% {
+		left: 0;
+		right: 100%;
+	}
+	50% {
+		left: 25%;
+		right: 25%;
+	}
+	100% {
+		left: 100%;
+		right: 0;
+	}
 }
 /* END HEADER */
 
