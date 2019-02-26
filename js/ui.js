@@ -19,8 +19,9 @@ var directories = [
 		state: 'loading',
 		files: {
 			'audio': [
-				{ path: 'asdf', start: 0, end: 0.03 },
-				{ path: 'asd', start: 0.045, end: 0.08 }
+				{ path: 'asdf', start: 0, end: 0.02 },
+				{ path: 'asd', start: 0.03, end: 0.04 },
+				{ path: 'asdf', start: 0.045, end: 0.2 }
 			]
 		}
 	 },
@@ -98,6 +99,7 @@ var main = new Vue({
 							start: file.start,
 							end: file.end,
 							group: false,
+							group_count: 1
 						}
 
 						for (var k = j + 1; k < dir.files[type].length; ++k) {
@@ -109,6 +111,7 @@ var main = new Vue({
 								// items overlap group together
 								
 								new_item.group = true;
+								new_item.group_count++;
 								new_item.end = file_next.end;
 								height = top_next - top + height_next;
 

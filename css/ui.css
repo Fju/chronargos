@@ -154,7 +154,6 @@ body {
 	border-radius: 5px;
 	z-index: 2;
 
-
 	box-shadow: 0 0 7px rgba(0, 0, 0, 0.4);
 }
 .main-item:active {
@@ -167,6 +166,16 @@ body {
 }
 .main-item[data-type="audio"] {
 	background: #31BD48;
+}
+.main-item-count {
+	text-align: center;
+	position: absolute;
+	top: 50%;	
+	left: 0;
+	right: 0;
+	font-size: 0.95em;
+	font-weight: bold;
+	transform: translateY(-50%);
 }
 /* END MAIN */
 
