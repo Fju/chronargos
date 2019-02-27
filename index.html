@@ -26,7 +26,7 @@
 		</div>
 		<div class="main-column" v-for="dir in getMainItems(this)" :style="dir.style">
 			<div v-for="file in dir.files" :style="file.style" class="main-item" :data-path="file.path" :data-type="file.type" :data-start="file.start" :data-end="file.end">
-				<div class="main-item-count" v-if="file.group">{{ file.group_count }}</div>
+				<div class="main-item-count" v-if="file.paths.length > 1">{{ file.paths.length }}</div>
 			</div>
 		</div>
 	</div>

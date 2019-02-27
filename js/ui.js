@@ -12,29 +12,25 @@ draggableItem.ondragstart = (e) => {
 const COL_PADDING = 6;
 const COL_ITEM_WIDTH = 40;
 
-var directories = [
+/*var directories = [
 	 {
 	 	name: 'test',
 		types: ['audio'],
 		state: 'loading',
 		files: {
 			'audio': [
-				{ path: 'asdf', start: 0, end: 0.02 },
-				{ path: 'asd', start: 0.03, end: 0.04 },
-				{ path: 'asdf', start: 0.045, end: 0.2 }
+				{ path: 'a.txt', start: 0, end: 2 },
+				{ path: 'b.txt', start: 3, end: 4 },
+				{ path: 'c.txt', start: 4.5, end: 8 },
+				{ path: 'd.txt', start: 24, end: 50 }
+			],
+			'video': [
+				{ path: 'e.txt', start: 10, end: 40 }	
 			]
 		}
 	 },
-	 /*{
-	 	name: 'test2',
-		types: ['video', 'audio'],
-		state: 'loading',
-		files: [
-			{ path: 'asdf', start: 0, end: 0.5, type: 'video' },
-			{ path: 'test', start: 0.55, end: 1, type: 'audio' }	
-		]
-	 }*/
-];
+];*/
+var directories = [];
 
 var main = new Vue({
 	el: '#main',
@@ -43,9 +39,9 @@ var main = new Vue({
 		zoom: 2.0,
 		offset: 0,
 		window_start: 0,
-		window_end: 0.5,
+		window_end: 0,
 		range_start: 0,
-		range_end: 1,
+		range_end: 0,
 		mouse_pos_y: 0
 	},
 	methods: {
@@ -74,7 +70,7 @@ var main = new Vue({
 				return [];
 			}
 
-			var min_height = 0.1;
+			var min_height = 22 / self.$el.offsetHeight;
 			return this.directories.map(dir => {
 				var col_width = (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING;
 
@@ -98,8 +94,7 @@ var main = new Vue({
 							type: type,
 							start: file.start,
 							end: file.end,
-							group: false,
-							group_count: 1
+							paths: [file.path]
 						}
 
 						for (var k = j + 1; k < dir.files[type].length; ++k) {
@@ -108,10 +103,8 @@ var main = new Vue({
 							var height_next = (file_next.end - file_next.start) / (window_end - window_start);
 
 							if (top + Math.max(min_height, height) > top_next) {
-								// items overlap group together
-								
-								new_item.group = true;
-								new_item.group_count++;
+								// items overlap group together								
+								new_item.paths.push(file_next.path);
 								new_item.end = file_next.end;
 								height = top_next - top + height_next;
 
@@ -126,7 +119,7 @@ var main = new Vue({
 						}
 						new_item.style = {
 							top: top * 100 + '%',
-							height: height * 100 + '%',
+							height: Math.max(min_height, height) * 100 + '%',
 							left: (i * (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING) + 'px',
 							width: COL_ITEM_WIDTH + 'px'
 						};
@@ -166,7 +159,6 @@ var main = new Vue({
 			}
 
 			var timestamps = [];
-
 			for (var t = Math.ceil(self.window_start / step) * step; t <= self.window_end; t += step) {
 				var style = {
 					top: (t - self.window_start) / (self.window_end - self.window_start) * 100 + '%'
@@ -191,12 +183,8 @@ var main = new Vue({
 					time: time
 				});
 			}
-
-			//console.log(step);
-		
 			return timestamps;
 		}
-
 	}	
 });
 
@@ -226,41 +214,6 @@ var header = new Vue({
 	}
 });
 
-function parseDates() {
-	var date_min = 0, date_max = 0;
-	directories.forEach(dir =>  {
-		dir.files = dir.files.map(f => {
-			var start = new Date('2019-01-02 ' + f.start);
-			var end = new Date('2019-01-02 ' + f.end);
-
-			f.start = start.getTime();
-			f.end = end.getTime();
-
-			if (date_min === 0 || date_min > f.start) date_min = f.start;
-			if (date_max === 0 || date_max < f.end) date_max = f.end;
-
-			return f;
-		});
-	});
-
-	//console.log(directories);
-
-	main.window_start = date_min;
-	main.range_start = date_min;
-
-	main.window_end = date_max;
-	main.range_end = date_max;
-
-	main.zoom = 1;
-}
-
-
-//document.getElementById('main').addEventListener('mousemove', (e) => {
-//	var body = document.querySelector('.main-column-body');
-//	main.mouse_pos_y = (e.offsetY - body.offsetTop) / body.clientHeight;
-
-//	console.log(main.mouse_pos_y);
-//});
 
 document.addEventListener('wheel', (e) => {
 	// detect scrolling
@@ -358,6 +311,7 @@ document.getElementById('open-dir').addEventListener('click', () => {
 			main.range_end = range_end;
 			main.window_start = range_start;
 			main.window_end = range_end;
+			main.zoom = 1;
 			
 			new_dir.files = files;
 			new_dir.state = 'done';
