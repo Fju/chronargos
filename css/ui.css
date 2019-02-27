@@ -176,6 +176,7 @@ body {
 	font-size: 0.95em;
 	font-weight: bold;
 	transform: translateY(-50%);
+	pointer-events: none;
 }
 /* END MAIN */
 

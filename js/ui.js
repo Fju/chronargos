@@ -48,18 +48,15 @@ var main = new Vue({
 		onMousemove: (e) => {
 			main.mouse_pos_y = e.offsetY / e.target.clientHeight;
 		},
-		onClick: (e) => {
-			var target = e.target;
-			if (target.className === 'main-item') {
-				var start = parseInt(target.getAttribute('data-start'));
-				var end = parseInt(target.getAttribute('data-end'));
+		onItemClick: (e) => {
+			var start = parseInt(e.target.getAttribute('data-start'));
+			var end = parseInt(e.target.getAttribute('data-end'));
 
-				if (!isNaN(start) && !isNaN(end)) {
-					main.window_start = start;
-					main.window_end = end;
-
-					main.zoom = (main.range_end - main.range_start) / (end - start);
-				}
+			if (!isNaN(start) && !isNaN(end)) {
+				// resize domain so that the item that was clicked is shown completely
+				main.window_start = start;
+				main.window_end = end;
+				main.zoom = (main.range_end - main.range_start) / (end - start);
 			}
 		},
 		getMainItems: (self) => {
@@ -146,12 +143,14 @@ var main = new Vue({
 			var nice_steps = [0.5, 1, 2, 5, 10, 15]; // nice step sizes
 
 			//var norm_range = range * Math.pow(10, -Math.floor(Math.log10(range)));
-	
+
+			var max_steps = Math.floor(self.$el.offsetHeight / 600 * 10);
+
 			var step = 0;
 			var i = 0, j = 0;
 			for (i = 0, j = 0; i + j < nice_powers.length + nice_steps.length; i = (i + 1) % nice_steps.length) {
 				step = nice_powers[j] * nice_steps[i];
-				if (range / step < 10) {
+				if (range / step < max_steps) {
 					break;	
 				}
 
@@ -215,6 +214,11 @@ var header = new Vue({
 });
 
 
+window.addEventListener('resize', e => {
+	header.$forceUpdate();
+	main.$forceUpdate();
+});
+
 document.addEventListener('wheel', (e) => {
 	// detect scrolling
 	e.preventDefault();
@@ -235,7 +239,6 @@ document.addEventListener('wheel', (e) => {
 
 		window_height = (main.range_end - main.range_start) / main.zoom;
 		//console.log(new_end - new_start, window_height);
-
 
 		if (new_start < main.range_start) {
 			new_start = main.range_start;
@@ -264,7 +267,6 @@ document.addEventListener('wheel', (e) => {
 		//console.log('scroll', main.window_start, main.window_end);
 	}
 });
-
 
 document.getElementById('open-dir').addEventListener('click', () => {
 	openDirectory().forEach(element => {
