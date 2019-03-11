@@ -49,15 +49,25 @@ body {
 	align-items: stretch;
 }
 .header-item {
-	font-size: 0.8em;
 	border-left: 0.5px solid rgba(255, 255, 255, 0.1);
 }
-.header-item span {
-	margin: 3px 0.5em;
+.header-title {
+	padding: 3px;
+	font-size: 0.8em;
 }
-.header-icon {
-	font-size: 2em;
-	margin-bottom: 3px;
+.header-button-group {
+	display: flex;
+	flex-direction: row;
+	font-size: 12px;
+}
+.header-button {
+	flex-grow: 1;
+	text-align: center;
+	cursor: pointer;
+	padding: 0.5em;
+}
+.header-button:hover, .header-button:active {
+	background: rgba(0, 0, 0, 0.3);
 }
 
 .header-state {

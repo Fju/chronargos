@@ -83,9 +83,7 @@ var main = new Vue({
 			e.dataTransfer.effectAllowed = 'copy';
 			e.preventDefault();
 			
-			var path = e.target.getAttribute('data-path');
-
-			
+			var path = e.target.getAttribute('data-path');	
 
 			ipcRenderer.send('ondragstart', path);
 			//console.log('dragstart', e.target.getAttribute('data-path'));
@@ -172,8 +170,6 @@ var main = new Vue({
 			}
 			var nice_powers = [1000, 60000, 3600000]; // 1 second, 1 minute, 1 hour (unit: milliseconds)
 			var nice_steps = [0.5, 1, 2, 5, 10, 15]; // nice step sizes
-
-			//var norm_range = range * Math.pow(10, -Math.floor(Math.log10(range)));
 
 			var max_steps = Math.floor(self.$el.offsetHeight / 600 * 10);
 

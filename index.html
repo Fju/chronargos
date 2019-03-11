@@ -3,16 +3,17 @@
 <head>
 	<link rel="stylesheet" href="css/ui.css" type="text/css" />
 	<link rel="stylesheet" href="css/effects.css" type="text/css" />
-	<!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">-->
+	<link rel="stylesheet" href="fontawesome/css/all.css" type="text/css" />
 </head>
 <body>
 	<div class="header" id="header">
 		<div class="header-item" v-for="dir in getHeaderItems()" :style="dir.style">
-			<!-- TODO: position multiple icons correctly -->
-			<div class="header-icon">
-				<!--<i v-for="type in dir.types" :class="['fas','fa-' + type]"></i>-->
+			<div class="header-button-group">
+				<div class="header-button"><i class="fas fa-cog"></i></div>
+				<div class="header-button"><i class="fas fa-times"></i></div>
+				<div class="header-button"><i class="fas fa-pen"></i></div>
 			</div>
-			<span>{{ dir.name }}</span>
+			<div class="header-title">{{ dir.name }}</div>
 			<div class="header-state">
 				<div class="header-state-loader" :data-state="dir.state"></div>
 			</div>
