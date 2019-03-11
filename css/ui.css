@@ -139,11 +139,8 @@ body {
 .main-column {
 	position: relative;
 	border-right: 0.5px solid rgba(255, 255, 255, 0.1);
-
+	pointer-events: none;
 }
-/*.main .main-column:last-child {
-	border-right: none;
-}*/
 .main-item {
 	position: absolute;
 		
@@ -155,6 +152,8 @@ body {
 	z-index: 2;
 
 	box-shadow: 0 0 7px rgba(0, 0, 0, 0.4);
+
+	pointer-events: auto;
 }
 .main-item:active {
 	cursor: grabbing;

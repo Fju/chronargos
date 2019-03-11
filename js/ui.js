@@ -1,16 +1,9 @@
-/*var ipcRenderer = require('electron').ipcRenderer;
+var ipcRenderer = require('electron').ipcRenderer;
 
 var draggableItem = document.getElementById('drag');
 
-draggableItem.setAttribute('draggable', true);
-draggableItem.ondragstart = (e) => {
-	e.dataTransfer.effectAllowed = 'copy';
-	e.preventDefault();
-	
-	ipcRenderer.send('ondragstart', '/test.txt');
-}*/
-const COL_PADDING = 6;
-const COL_ITEM_WIDTH = 40;
+const COL_PADDING = 8;
+const COL_ITEM_WIDTH = 44;
 
 /*var directories = [
 	 {
@@ -42,22 +35,60 @@ var main = new Vue({
 		window_end: 0,
 		range_start: 0,
 		range_end: 0,
-		mouse_pos_y: 0
+		mouse_pos_y: 0,
+		prev_window: false
 	},
 	methods: {
+		// save mouse position for scrolling
 		onMousemove: (e) => {
 			main.mouse_pos_y = e.offsetY / e.target.clientHeight;
 		},
-		onItemClick: (e) => {
-			var start = parseInt(e.target.getAttribute('data-start'));
-			var end = parseInt(e.target.getAttribute('data-end'));
+		// zoom in on objects when double clicked on or zoom back out if double cliked again
+		onMainDoubleClick: (e) => {
 
-			if (!isNaN(start) && !isNaN(end)) {
-				// resize domain so that the item that was clicked is shown completely
-				main.window_start = start;
-				main.window_end = end;
-				main.zoom = (main.range_end - main.range_start) / (end - start);
+			if (e.target.className === 'main') {
+				// clicked on background zoom out to full range
+				main.window_start = main.range_start;
+				main.window_end = main.range_end;
+				main.zoom = 1;
+
+				main.prev_window = false;
+			} else if (e.target.className === 'main-item') {
+				if (main.prev_window) {
+					// zoom out back to previous window range
+					main.window_start = main.prev_window_start;
+					main.window_end = main.prev_window_end;
+					main.zoom = (main.range_end - main.range_start) / (main.prev_window_end - main.prev_window_start);
+					main.prev_window = false;
+				} else {
+					// zoom in on object					
+					var start = parseInt(e.target.getAttribute('data-start'));
+					var end = parseInt(e.target.getAttribute('data-end'));
+
+					if (isNaN(start) || isNaN(end)) return;
+
+					// store current window range
+					main.prev_window = true;
+					main.prev_window_start = main.window_start;
+					main.prev_window_end = main.window_end;
+
+					main.window_start = start;
+					main.window_end = end;
+					main.zoom = (main.range_end - main.range_start) / (end - start);
+				}
 			}
+		},
+		// drag event
+		onDragStart: (e) => {
+			e.dataTransfer.effectAllowed = 'copy';
+			e.preventDefault();
+			
+			var path = e.target.getAttribute('data-path');
+
+			
+
+			ipcRenderer.send('ondragstart', path);
+			//console.log('dragstart', e.target.getAttribute('data-path'));
 		},
 		getMainItems: (self) => {
 			// store as final variable to use inside forEach function
