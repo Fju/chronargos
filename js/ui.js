@@ -3,7 +3,7 @@ var ipcRenderer = require('electron').ipcRenderer;
 var draggableItem = document.getElementById('drag');
 
 const COL_PADDING = 8;
-const COL_ITEM_WIDTH = 44;
+const COL_ITEM_WIDTH = 40;
 
 /*var directories = [
 	 {
@@ -171,7 +171,7 @@ var main = new Vue({
 			var nice_powers = [1000, 60000, 3600000]; // 1 second, 1 minute, 1 hour (unit: milliseconds)
 			var nice_steps = [0.5, 1, 2, 5, 10, 15]; // nice step sizes
 
-			var max_steps = Math.floor(self.$el.offsetHeight / 600 * 10);
+			var max_steps = Math.floor(self.$el.offsetHeight / 600 * 8);
 
 			var step = 0;
 			var i = 0, j = 0;
@@ -236,17 +236,25 @@ var header = new Vue({
 				});
 			});
 			return data;
+		},
+		onHeaderSettingsClick: (e) => {
+			console.log('open settings');
+		},
+		onHeaderCloseClick: (e) => {
+			var index = e.target.getAttribute('data-index');
+
+			directories.splice(index, 1);
+			header.$forceUpdate();
+			main.$forceUpdate();
 		}
 	}
 });
 
-
 window.addEventListener('resize', e => {
-	header.$forceUpdate();
 	main.$forceUpdate();
 });
 
-document.addEventListener('wheel', (e) => {
+document.addEventListener('wheel', e => {
 	// detect scrolling
 	e.preventDefault();
 
@@ -345,8 +353,7 @@ document.getElementById('open-dir').addEventListener('click', () => {
 			new_dir.files = files;
 			new_dir.state = 'done';
 
-			console.log(files);
-			//main.$forceUpdate();
+			main.$forceUpdate();
 			header.$forceUpdate();
 		}).catch(err => {
 			//columnContainer.removeChild(column);
