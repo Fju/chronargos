@@ -317,7 +317,9 @@ document.getElementById('open-dir').addEventListener('click', () => {
 		main.$forceUpdate();
 		header.$forceUpdate();
 
-		element.promise.then(data => {
+		element.promise.then(async promise => {
+			var data = await promise;
+			
 			var range_start = main.range_start;
 			var range_end = main.range_end;
 
