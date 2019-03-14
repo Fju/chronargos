@@ -92,24 +92,22 @@ var main = new Vue({
 			// store as final variable to use inside forEach function
 			var window_start = self.window_start, window_end = self.window_end;
 			
-			if (window_end - window_start <= 0) {
-				return [];
-			}
+	
 
 			var min_height = 22 / self.$el.offsetHeight;
 			return this.directories.map(dir => {
-				var col_width = (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING;
+				var files = [];
+				var col_width = COL_ITEM_WIDTH + 2 * COL_PADDING;
 
-				if (typeof dir.files !== 'object') {
+				if (window_end - window_start <= 0) {
 					return {
-						files: [],
-				   		style: { width: col_width }
+						files: files,
+						style: { width: col_width + 'px' }
 					}
 				}
 				
-				var files = [];
-				var i = 0, type;
-				for (type in dir.files) {
+				var cols = 0;
+				for (var type in dir.files) {
 					for (var j = 0; j < dir.files[type].length; ++j) {
 						var file = dir.files[type][j];
 
@@ -138,27 +136,25 @@ var main = new Vue({
 						}
 						j = k - 1;
 
-						console.log(new_item);
-
 						if (!new_item.group) {
 							new_item.path = file.path;
 						}
 						new_item.style = {
 							top: top * 100 + '%',
 							height: Math.max(min_height, height) * 100 + '%',
-							left: (i * (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING) + 'px',
+							left: cols * (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING + 'px',
 							width: COL_ITEM_WIDTH + 'px'
 						};
 						
 						files.push(new_item);
 					}
-					i++;
+					++cols;
 				}
-
-				var col_width = i * (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING;				
+				
+				if (cols > 1) col_width += (cols - 1) * (COL_ITEM_WIDTH + COL_PADDING)
 				return {
 					files: files,
-					style: { width: col_width }
+					style: { width: col_width + 'px' }
 				}
 			});			
 		},
@@ -223,9 +219,9 @@ var header = new Vue({
 		getHeaderItems: () => {
 			var data = [];
 			this.directories.forEach(dir => {
-				if (typeof dir.files !== 'object') return;
+				//if (typeof dir.files !== 'object') return;
 
-				var types = Object.keys(dir.files);
+				var types = (typeof dir.files === 'object') ? Object.keys(dir.files) : [];
 				var width = Math.max(1, types.length) * (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING;
 				
 				data.push({
@@ -235,12 +231,13 @@ var header = new Vue({
 					style: { width: width + 'px' }
 				});
 			});
+			/*console.log('header itesm', data.length);*/
 			return data;
 		},
-		onHeaderSettingsClick: (e) => {
+		onHeaderSettingsClick: e => {
 			console.log('open settings');
 		},
-		onHeaderCloseClick: (e) => {
+		onHeaderCloseClick: e => {
 			var index = e.target.getAttribute('data-index');
 
 			directories.splice(index, 1);
@@ -258,10 +255,8 @@ document.addEventListener('wheel', e => {
 	// detect scrolling
 	e.preventDefault();
 
-	var sign = e.deltaY > 0 ? 1 : -1;
-
 	var window_height = (main.range_end - main.range_start) / main.zoom;
-
+	var sign = e.deltaY > 0 ? 1 : -1;
 	if (e.ctrlKey) {
 		var zoom_step = main.zoom;
 			
@@ -273,7 +268,6 @@ document.addEventListener('wheel', e => {
 		var new_end = main.window_end - (1 - main.mouse_pos_y) * window_height * (1 - 1 / zoom_step);
 
 		window_height = (main.range_end - main.range_start) / main.zoom;
-		//console.log(new_end - new_start, window_height);
 
 		if (new_start < main.range_start) {
 			new_start = main.range_start;
@@ -297,7 +291,6 @@ document.addEventListener('wheel', e => {
 			// scroll up, limit the window start
 			main.window_start = Math.max(main.range_start, main.window_start + step);
 			main.window_end = main.window_start + window_height;
-
 		}
 		//console.log('scroll', main.window_start, main.window_end);
 	}
@@ -309,35 +302,33 @@ document.getElementById('open-dir').addEventListener('click', () => {
 		var new_dir = {
 			name: element.dirname,
 			types: [],
+			files: {},
 			state: 'loading' // initialize in loading state to show loader animation
 		};
 
-		main.directories.push(new_dir);
+		directories.push(new_dir);
 
 		main.$forceUpdate();
 		header.$forceUpdate();
 
 		element.promise.then(async promise => {
-			var data = await promise;
+			// wait for all file promises to be resolved, `data` is an array containing metadata objects of all files that were found
+			var data = await Promise.all(promise);
 			
 			var range_start = main.range_start;
 			var range_end = main.range_end;
 
 			var files = {};
-
-			for (item of data) {
-				// add 
+			for (var item of data) {
+				// create new object in the `files` object
 				if (!(item.type in files)) files[item.type] = [];
 
 				var start = item.birthtime;
 				var end = start + item.duration * 1000;
-				if (range_start === 0 || range_start > start) {
-					// update if current start is bigger than this files start to find the minimum
-					range_start = start;
-				}
-				if (range_end === 0 || range_end < end) {
-					range_end = end;
-				}
+
+				// overwrite range to the minimum/maximum of the files' ranges
+				if (!range_start || range_start > start) range_start = start;
+				if (!range_end || range_end < end) range_end = end;				
 
 				files[item.type].push({
 					path: item.path,
@@ -346,22 +337,23 @@ document.getElementById('open-dir').addEventListener('click', () => {
 				});
 			}
 
+			// update window and range
 			main.range_start = range_start;
 			main.range_end = range_end;
 			main.window_start = range_start;
 			main.window_end = range_end;
 			main.zoom = 1;
 			
+			// switch state to done			
 			new_dir.files = files;
 			new_dir.state = 'done';
-
+			// update view
 			main.$forceUpdate();
 			header.$forceUpdate();
 		}).catch(err => {
-			//columnContainer.removeChild(column);
 			console.log('error', err);
 			new_dir.state = 'error';
-		});			
+		});		
 	});
 });
 

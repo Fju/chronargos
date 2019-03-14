@@ -19,7 +19,7 @@ body {
 	background: #272932;
 	height: 100vh;
 
-	-webkit-user-select: none; /* Safari */        
+	-webkit-user-select: none; /* Safari */		
 	-moz-user-select: none; /* Firefox */
 	-ms-user-select: none; /* IE10+/Edge */
 	user-select: none; /* Standard */
@@ -162,8 +162,8 @@ body {
 	position: absolute;
 		
 	cursor: grab;
-    cursor: -moz-grab;
-    cursor: -webkit-grab;
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
 
 	border-radius: 5px;
 	z-index: 2;
@@ -174,8 +174,8 @@ body {
 }
 .main-item:active {
 	cursor: grabbing;
-    cursor: -moz-grabbing;
-    cursor: -webkit-grabbing;
+	cursor: -moz-grabbing;
+	cursor: -webkit-grabbing;
 }
 .main-item[data-type="video"] {
 	background: #ee2c88;

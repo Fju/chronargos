@@ -56,3 +56,4 @@ ipcMain.on('ondragstart', (event, filePath) => {
 		icon: 'images/drag_icon.png'
 	});
 });
+
