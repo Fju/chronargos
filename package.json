@@ -10,7 +10,7 @@
   },
   "bugs": "https://github.com/Fju/chronargos/issues",
   "license": "GNU GPLv3",
-  "main": "main.js",
+  "main": "app/main.js",
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"

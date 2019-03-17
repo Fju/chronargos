@@ -9,7 +9,7 @@ function createWindow() {
 	win = new BrowserWindow({ width: 1000, height: 640 });
 
 	// and load the index.html of the app.
-	win.loadFile('index.html');
+	win.loadFile(__dirname + '/index.html');
 
 	win.setMenuBarVisibility(false)
 	//win.setMenu(null);

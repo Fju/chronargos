@@ -38,7 +38,7 @@ body {
 }
 
 .range {
-	padding: 1em;
+	padding: 0.5em 1em;
 	text-align: center;
 	background: #1F2028;
 	color: white;
@@ -220,9 +220,6 @@ body {
 	padding: 0.5em;
 	text-align: center;	
 	cursor: pointer;
-}
-.footer-button i {
-	margin-right: 4px;
 }
 .footer-button:hover {
 	background: rgba(0, 0, 0, 0.3);

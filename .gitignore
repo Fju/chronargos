@@ -1,5 +1,4 @@
 node_modules/
 test/
-font/
-fontawesome/
-package-lock.json
+app/font/
+app/fontawesome/

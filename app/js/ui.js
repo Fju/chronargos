@@ -2,6 +2,7 @@ var ipcRenderer = require('electron').ipcRenderer;
 
 var draggableItem = document.getElementById('drag');
 
+
 const COL_PADDING = 8;
 const COL_ITEM_WIDTH = 40;
 
@@ -75,9 +76,8 @@ var main = new Vue({
 			e.dataTransfer.effectAllowed = 'copy';
 			e.preventDefault();
 			
-			var path = e.target.getAttribute('data-path');	
-
-			ipcRenderer.send('ondragstart', path);
+			//var path = e.target.getAttribute('data-path');
+			//ipcRenderer.send('ondragstart', path);
 			//console.log('dragstart', e.target.getAttribute('data-path'));
 		},
 		getMainItems: (self) => {
@@ -127,16 +127,14 @@ var main = new Vue({
 						}
 						j = k - 1;
 
-						if (!new_item.group) {
-							new_item.path = file.path;
-						}
 						new_item.style = {
 							top: top * 100 + '%',
 							height: Math.max(min_height, height) * 100 + '%',
 							left: cols * (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING + 'px',
 							width: COL_ITEM_WIDTH + 'px'
 						};
-						
+
+						// TODO: check if item is visible (top < 100% || top + height > 0%)							
 						files.push(new_item);
 					}
 					++cols;
@@ -199,6 +197,11 @@ var main = new Vue({
 			return timestamps;
 		},
 		setRange: (start, end) => {
+			var a = new Date(start);
+			var b = new Date(end);
+
+			document.getElementById('range').textContent = a.toTimeString().substr(0, 8) + ' - ' + b.toTimeString().substr(0, 8);
+
 			main.range_start = start;
 			main.range_end = end;
 			main.setZoom(start, end);
@@ -232,7 +235,8 @@ var header = new Vue({
 			return data;
 		},
 		onHeaderSettingsClick: e => {
-			console.log('open settings');
+			dialog.showErrorBox('Error', 'Lorem ipsum dolor sit amet.');
+			//console.log('open settings');
 		},
 		onHeaderCloseClick: e => {
 			var index = e.target.getAttribute('data-index');
@@ -276,7 +280,6 @@ document.addEventListener('wheel', e => {
 		} 
 		main.window_start = new_start;
 		main.window_end = new_end;
-
 		//console.log('zoom', main.zoom, main.window_start, main.window_end);
 	} else {
 		var step = window_height * sign * 0.05;
@@ -291,6 +294,7 @@ document.addEventListener('wheel', e => {
 		}
 		//console.log('scroll', main.window_start, main.window_end);
 	}
+
 });
 
 document.getElementById('open-dir').addEventListener('click', () => {
@@ -335,9 +339,10 @@ document.getElementById('open-dir').addEventListener('click', () => {
 					
 			// switch state to done
 			new_dir.state = 'done';
-
 			new_dir.types = Object.keys(new_dir.files);
+
 			header.$forceUpdate();
+			main.$forceUpdate();
 		}).catch(err => {
 			console.log('error', err);
 			new_dir.state = 'error';
