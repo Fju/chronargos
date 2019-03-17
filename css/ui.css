@@ -36,6 +36,16 @@ body {
 	background: rgb(238,44,136);
 	background: linear-gradient(90deg, rgba(238,44,136,1) 0%, rgba(247,145,43,1) 100%);
 }
+
+.range {
+	padding: 1em;
+	text-align: center;
+	background: #1F2028;
+	color: white;
+
+	font-size: 12px;
+}
+
 /* HEADER */
 .header {
 	padding-left: 1em; /* space for timelinei */

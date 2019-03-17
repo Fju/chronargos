@@ -45,20 +45,14 @@ var main = new Vue({
 		},
 		// zoom in on objects when double clicked on or zoom back out if double cliked again
 		onMainDoubleClick: (e) => {
-
 			if (e.target.className === 'main') {
 				// clicked on background zoom out to full range
-				main.window_start = main.range_start;
-				main.window_end = main.range_end;
-				main.zoom = 1;
-
+				main.setZoom(main.range_start, main.range_end);
 				main.prev_window = false;
 			} else if (e.target.className === 'main-item') {
 				if (main.prev_window) {
 					// zoom out back to previous window range
-					main.window_start = main.prev_window_start;
-					main.window_end = main.prev_window_end;
-					main.zoom = (main.range_end - main.range_start) / (main.prev_window_end - main.prev_window_start);
+					main.setZoom(main.prev_window_start, main.prev_window_end);
 					main.prev_window = false;
 				} else {
 					// zoom in on object					
@@ -72,9 +66,7 @@ var main = new Vue({
 					main.prev_window_start = main.window_start;
 					main.prev_window_end = main.window_end;
 
-					main.window_start = start;
-					main.window_end = end;
-					main.zoom = (main.range_end - main.range_start) / (end - start);
+					main.setZoom(start, end);
 				}
 			}
 		},
@@ -89,11 +81,10 @@ var main = new Vue({
 			//console.log('dragstart', e.target.getAttribute('data-path'));
 		},
 		getMainItems: (self) => {
+			console.log('render', this);
 			// store as final variable to use inside forEach function
 			var window_start = self.window_start, window_end = self.window_end;
-			
-	
-
+		
 			var min_height = 22 / self.$el.offsetHeight;
 			return this.directories.map(dir => {
 				var files = [];
@@ -206,6 +197,16 @@ var main = new Vue({
 				});
 			}
 			return timestamps;
+		},
+		setRange: (start, end) => {
+			main.range_start = start;
+			main.range_end = end;
+			main.setZoom(start, end);
+		},
+		setZoom: (start, end) => {
+			main.window_start = start;
+			main.window_end = end;
+			main.zoom = (main.range_end - main.range_start) / (end - start);
 		}
 	}	
 });
@@ -219,19 +220,15 @@ var header = new Vue({
 		getHeaderItems: () => {
 			var data = [];
 			this.directories.forEach(dir => {
-				//if (typeof dir.files !== 'object') return;
-
-				var types = (typeof dir.files === 'object') ? Object.keys(dir.files) : [];
-				var width = Math.max(1, types.length) * (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING;
-				
+				var width = Math.max(1, dir.types.length) * (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING;				
 				data.push({
 					name: dir.name,
-					types: types,
+					types: dir.types,
 					state: dir.state,
 					style: { width: width + 'px' }
 				});
 			});
-			/*console.log('header itesm', data.length);*/
+			
 			return data;
 		},
 		onHeaderSettingsClick: e => {
@@ -279,7 +276,7 @@ document.addEventListener('wheel', e => {
 		} 
 		main.window_start = new_start;
 		main.window_end = new_end;
-	
+
 		//console.log('zoom', main.zoom, main.window_start, main.window_end);
 	} else {
 		var step = window_height * sign * 0.05;
@@ -297,58 +294,49 @@ document.addEventListener('wheel', e => {
 });
 
 document.getElementById('open-dir').addEventListener('click', () => {
-	openDirectory().forEach(element => {
+	openDirectory().forEach(dir => {
 		// create new column
 		var new_dir = {
-			name: element.dirname,
+			name: dir.dirname,
 			types: [],
 			files: {},
 			state: 'loading' // initialize in loading state to show loader animation
 		};
 
 		directories.push(new_dir);
-
-		main.$forceUpdate();
 		header.$forceUpdate();
 
-		element.promise.then(async promise => {
+		dir.promise.then(async promise => {
 			// wait for all file promises to be resolved, `data` is an array containing metadata objects of all files that were found
-			var data = await Promise.all(promise);
+			var files = await Promise.all(promise);
 			
 			var range_start = main.range_start;
 			var range_end = main.range_end;
 
-			var files = {};
-			for (var item of data) {
+			for (var file of files) {
 				// create new object in the `files` object
-				if (!(item.type in files)) files[item.type] = [];
+				if (!(file.type in new_dir.files)) new_dir.files[file.type] = [];
 
-				var start = item.birthtime;
-				var end = start + item.duration * 1000;
-
+				var start = file.birthtime;
+				var end = start + file.duration * 1000;
+				
 				// overwrite range to the minimum/maximum of the files' ranges
 				if (!range_start || range_start > start) range_start = start;
 				if (!range_end || range_end < end) range_end = end;				
 
-				files[item.type].push({
-					path: item.path,
+				new_dir.files[file.type].push({
+					path: file.path,
 					start: start,
 					end: end
 				});
 			}
-
 			// update window and range
-			main.range_start = range_start;
-			main.range_end = range_end;
-			main.window_start = range_start;
-			main.window_end = range_end;
-			main.zoom = 1;
-			
-			// switch state to done			
-			new_dir.files = files;
+			main.setRange(range_start, range_end);
+					
+			// switch state to done
 			new_dir.state = 'done';
-			// update view
-			main.$forceUpdate();
+
+			new_dir.types = Object.keys(new_dir.files);
 			header.$forceUpdate();
 		}).catch(err => {
 			console.log('error', err);

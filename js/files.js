@@ -64,6 +64,22 @@ function statPromise(path) {
 function loadDir(dir, depth) {
 	if (!depth) depth = 0;
 
+	function filePromise(path, birthtime, type) {
+		// helper function this fixes birthtime and duration being overwritten by other files in the async promise
+		// since birthtime and type are parameters they are finalized and don't change while waiting for the duration
+		return new Promise(async (resolve, reject) => {
+			// read video/audio duration
+			var info = await ffprobe(file, { path: ffprobeStatic.path });
+			// return metadata
+			resolve({
+				birthtime: birthtime,
+				duration: parseInt(info.streams[0].duration),
+				path: file,
+				type: type
+			});
+		});
+	}
+
 	return new Promise(async (resolve, reject) => {
 		var promises = [];
 		
@@ -73,26 +89,17 @@ function loadDir(dir, depth) {
 			file = path.join(dir, file);
 			var stat = await statPromise(file);
 
+			
 			if (stat.isDirectory() && depth <= MAX_DEPTH) {
 				// recursion, go into the sub-directory and find all files in there
 				promises = promises.concat(await loadDir(file, depth + 1));
 			} else if (stat.isFile()) {
-				var extension = path.extname(file).substr(1);				
+				var extension = path.extname(file).substr(1);
 				if (!isSupported(extension)) continue;
 
-				var type = getType(extension);
+				var type = getType(extension), birthtime = Math.round(stat.birthtimeMs);
 				// add promise of current file to the array
-				promises.push(new Promise(async (resolve, reject) => {
-					// read video/audio duration
-					var info = await ffprobe(file, { path: ffprobeStatic.path });
-					// return metadata
-					resolve({
-						birthtime: Math.round(stat.birthtimeMs),
-						duration: parseInt(info.streams[0].duration),
-						path: file,
-						type: type
-					});
-				}));
+				promises.push(filePromise(path, birthtime, type));
 			}
 		}
 
