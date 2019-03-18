@@ -13,6 +13,7 @@
   "main": "app/main.js",
   "scripts": {
     "start": "electron .",
+	"compile-less": "lessc app/less/main.less app/css/bundle.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
