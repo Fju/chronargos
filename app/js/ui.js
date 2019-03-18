@@ -200,8 +200,6 @@ var main = new Vue({
 			var a = new Date(start);
 			var b = new Date(end);
 
-			document.getElementById('range').textContent = a.toTimeString().substr(0, 8) + ' - ' + b.toTimeString().substr(0, 8);
-
 			main.range_start = start;
 			main.range_end = end;
 			main.setZoom(start, end);

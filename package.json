@@ -12,8 +12,8 @@
   "license": "GNU GPLv3",
   "main": "app/main.js",
   "scripts": {
-    "start": "electron .",
-	"compile-less": "lessc app/less/main.less app/css/bundle.css",
+    "start": "lessc app/less/main.less app/bundle.css && electron .",
+	"compile-less": "lessc app/less/main.less app/bundle.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
