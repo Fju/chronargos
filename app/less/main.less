@@ -47,7 +47,7 @@ body {
 	font-size: 14px;	
 	font-family: 'Source Sans Pro Regular', Arial, sans-serif;
 	color: @text-color;
-	background: @background-main;
+	background: @accent-black;
 	height: 100vh;
 	
 	.mixin-select(none);
@@ -64,12 +64,26 @@ body {
 }
 
 .frame {
-	padding: 0.25em 4px;
+	// margin leaves space for standard resizing behaviour of the OS
+	margin: 2px;
+	padding: 2px;
 	text-align: center;
 	background: @accent-black;
 	color: @text-color;
-
+	position: relative;
+	
+	// the area can be used for moving the window
 	-webkit-app-region: drag;
+
+	.frame-title {
+		font-size: 12px;
+		font-weight: bold;
+		
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
 
 	.frame-button-group {
 		float: left;
@@ -101,9 +115,7 @@ body {
 				&:hover { background: fade(@macos-window-maximize, 75%); }
 			}
 		}
-
 	}
-
 }
 
 .header {
@@ -182,7 +194,9 @@ body {
 	align-items: stretch;
 
 	overflow-x: auto;
-    overflow-y: hidden;    
+    overflow-y: hidden;
+
+	background: @background-main;  
 
     .main-column {
         position: relative;

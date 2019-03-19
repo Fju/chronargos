@@ -13,6 +13,7 @@ document.getElementById('app-minimize').addEventListener('click', function() {
 	win.minimize();
 });
 document.getElementById('app-maximize').addEventListener('click', function() {
+	// toggle maximization/unmaximization
 	if (win.isMaximized()) win.unmaximize();
 	else win.maximize();
 });
