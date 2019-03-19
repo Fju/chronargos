@@ -1,7 +1,21 @@
-var ipcRenderer = require('electron').ipcRenderer;
+var { remote, ipcRenderer } = require('electron');
 
 var draggableItem = document.getElementById('drag');
 
+let win = remote.getCurrentWindow();
+
+
+document.getElementById('app-quit').addEventListener('click', function() {
+	// close window
+	remote.app.quit();
+});
+document.getElementById('app-minimize').addEventListener('click', function() {
+	win.minimize();
+});
+document.getElementById('app-maximize').addEventListener('click', function() {
+	if (win.isMaximized()) win.unmaximize();
+	else win.maximize();
+});
 
 const COL_PADDING = 8;
 const COL_ITEM_WIDTH = 40;

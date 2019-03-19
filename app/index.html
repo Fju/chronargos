@@ -5,7 +5,14 @@
 	<link rel="stylesheet" href="fontawesome/css/all.css" type="text/css" />
 </head>
 <body>
-	<!--<div class="range" id="range">28.02.2019, 08:00 -- 29.02.2019, 09:00</div>-->
+	<div class="frame">
+		chronargos
+		<div class="frame-button-group">
+			<div class="frame-button frame-button-close" id="app-quit"></div>
+			<div class="frame-button frame-button-maximize" id="app-maximize"></div>
+			<div class="frame-button frame-button-minimize" id="app-minimize"></div>
+		</div>
+	</div>
 	<div class="header" id="header">
 		<div class="header-item" v-for="(dir, index) in getHeaderItems()" :style="dir.style">
 			<div class="header-button-group">

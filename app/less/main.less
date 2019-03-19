@@ -18,6 +18,10 @@
 
 @timeline-width: 14px;
 
+@macos-window-close: #fb5f60;
+@macos-window-minimize: #fdbb40;
+@macos-window-maximize: #35cd47;
+
 * {
 	box-sizing: border-box;
 }
@@ -59,11 +63,47 @@ body {
 	background: linear-gradient(90deg, rgba(238,44,136,1) 0%, rgba(247,145,43,1) 100%);
 }
 
-.range {
-	padding: 0.5em 1em;
+.frame {
+	padding: 0.25em 4px;
 	text-align: center;
-	background: @background-controls;
+	background: @accent-black;
 	color: @text-color;
+
+	-webkit-app-region: drag;
+
+	.frame-button-group {
+		float: left;
+
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		height: 16px;
+
+		.frame-button {
+			border-radius: 50%;
+			width: 11px;
+			height: 11px;
+			margin: 0 4px;
+			// window buttons, disallow window drag so that buttons can be clicked
+			-webkit-app-region: no-drag;
+			cursor: pointer;
+
+			&.frame-button-close {
+				background: @macos-window-close;
+				&:hover { background: fade(@macos-window-close, 75%); }
+			}
+			&.frame-button-maximize {
+				background: @macos-window-minimize;
+				&:hover { background: fade(@macos-window-minimize, 75%); }
+			}
+			&.frame-button-minimize {
+				background: @macos-window-maximize;
+				&:hover { background: fade(@macos-window-maximize, 75%); }
+			}
+		}
+
+	}
+
 }
 
 .header {
