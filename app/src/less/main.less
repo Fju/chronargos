@@ -1,26 +1,5 @@
+@import 'colors';
 @import 'anim';
-
-@background-controls: #21242b;
-@background-main: #292c33;
-
-@border-color: #1c1f26;
-@border-color-bright: #383b42;
-
-@text-color: #d2daee;
-
-@accent-red: #e02822;
-@accent-magenta: #ee2c88;
-@accent-orange: #f7912b;
-@accent-yellow: #eed52c;
-@accent-green: #31bd48;
-@accent-blue: #325bfc;
-@accent-black: #181920;
-
-@timeline-width: 14px;
-
-@macos-window-close: #fb5f60;
-@macos-window-minimize: #fdbb40;
-@macos-window-maximize: #35cd47;
 
 * {
 	box-sizing: border-box;
@@ -33,6 +12,7 @@
 	src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url('font/Source Sans Pro.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
 .mixin-select(@mode) {
 	-webkit-user-select: @mode;
 	-moz-user-select: @mode;
@@ -51,72 +31,16 @@ body {
 	height: 100vh;
 	
 	.mixin-select(none);
-
+}
+#app {
+	height: 100vh;
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
 }
 .flex-fill { flex-grow: 1; }
 
-.accent {
-	background: rgb(238,44,136);
-	background: linear-gradient(90deg, rgba(238,44,136,1) 0%, rgba(247,145,43,1) 100%);
-}
-
-.frame {
-	// margin leaves space for standard resizing behaviour of the OS
-	margin: 2px;
-	padding: 2px;
-	text-align: center;
-	background: @accent-black;
-	color: @text-color;
-	position: relative;
-	
-	// the area can be used for moving the window
-	-webkit-app-region: drag;
-
-	.frame-title {
-		font-size: 12px;
-		font-weight: bold;
-		
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		transform: translate(-50%, -50%);
-	}
-
-	.frame-button-group {
-		float: left;
-
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		height: 16px;
-
-		.frame-button {
-			border-radius: 50%;
-			width: 11px;
-			height: 11px;
-			margin: 0 4px;
-			// window buttons, disallow window drag so that buttons can be clicked
-			-webkit-app-region: no-drag;
-			cursor: pointer;
-
-			&.frame-button-close {
-				background: @macos-window-close;
-				&:hover { background: fade(@macos-window-close, 75%); }
-			}
-			&.frame-button-maximize {
-				background: @macos-window-minimize;
-				&:hover { background: fade(@macos-window-minimize, 75%); }
-			}
-			&.frame-button-minimize {
-				background: @macos-window-maximize;
-				&:hover { background: fade(@macos-window-maximize, 75%); }
-			}
-		}
-	}
-}
+@import 'TitleBar.less';
 
 .header {
 	padding-left: @timeline-width;

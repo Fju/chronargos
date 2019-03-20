@@ -1,0 +1,74 @@
+@import 'colors';
+
+.window-title-bar {
+	// margin leaves space for standard resizing behaviour of the OS
+	margin: 2px;
+	padding: 2px;
+	text-align: center;
+	background: @accent-black;
+	color: @text-color;
+	position: relative;
+	
+	// the area can be used for moving the window
+	-webkit-app-region: drag;
+
+	.window-title {
+		font-size: 12px;
+		font-weight: bold;
+		
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	.window-button-group {
+		float: left;
+
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		height: 16px;
+
+		.window-button {
+			border-radius: 50%;
+			width: 11px;
+			height: 11px;
+			margin: 0 4px;
+			// window buttons, disallow window drag so that buttons can be clicked
+			-webkit-app-region: no-drag;
+			cursor: pointer;
+
+			position: relative;
+
+			&.window-close {
+				background: @macos-window-close;
+				//&:hover { background: fade(@macos-window-close, 75%); }
+			}
+			&.window-maximize {
+				background: @macos-window-minimize;
+				//&:hover { background: fade(@macos-window-minimize, 75%); }
+			}
+			&.window-minimize {
+				background: @macos-window-maximize;
+				//&:hover { background: fade(@macos-window-maximize, 75%); }
+				i {
+					font-size: 5px;
+				}
+			}
+			
+			i {
+				position: absolute;
+				font-size: 7px;
+				color: rgba(0, 0, 0, 0);
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+			&:hover i {
+				color: rgba(0, 0, 0, 0.4);
+			}		
+		}
+	}
+}
+

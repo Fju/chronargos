@@ -1,19 +1,15 @@
 <html>
 
 <head>
-	<link rel="stylesheet" href="bundle.css" type="text/css" />
+	<link rel="stylesheet" href="dist/bundle.css" type="text/css" />
 	<link rel="stylesheet" href="fontawesome/css/all.css" type="text/css" />
 </head>
 <body>
-	<div class="frame">
-		<span class="frame-title">chronargos</span>
-		<div class="frame-button-group">
-			<div class="frame-button frame-button-close" id="app-quit"></div>
-			<div class="frame-button frame-button-maximize" id="app-maximize"></div>
-			<div class="frame-button frame-button-minimize" id="app-minimize"></div>
-		</div>
+	<div id="app">
+		<title-bar :app-name="appName"></title-bar>
+		<header></header>
 	</div>
-	<div class="header" id="header">
+<!--<div class="header" id="header">
 		<div class="header-item" v-for="(dir, index) in getHeaderItems()" :style="dir.style">
 			<div class="header-button-group">
 				<div class="header-button" v-on:click="onHeaderSettingsClick"><i class="fas fa-cog"></i></div>
@@ -46,8 +42,7 @@
 			<i class="fas fa-cog"></i>
 		</div>
 	</div>
+-->
 </body>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script type="text/javascript" src="js/files.js"></script>
-<script type="text/javascript" src="js/ui.js"></script>
+<script src="dist/bundle.js"></script>
 </html>
