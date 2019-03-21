@@ -1,7 +1,7 @@
 <template>
 	<div class="main" v-on:mousemove="onMousemove">
-		<timeline></timeline>
-		<file-column v-for="dir in fileColumns" :key="dir.id" :style="dir.style" :files="dir.files"></file-column>
+		<timeline v-if="directories.length > 0"></timeline>
+		<file-column v-for="dir in fileColumns" :key="dir.id" :style="dir.style" v-bind:files="dir.files" :types="dir.types"></file-column>
 	</div>
 </template>
 
@@ -14,15 +14,16 @@
 	import { data } from '../js/ui.js';
 
 	export default {
-		data: () => {
+		data () {
 			return data;
 		},
 		computed: {
-			fileColumns: () => {
+			fileColumns: function () {
 				return data.directories.map(dir => {
 					var col_width = Math.max(1, dir.types.length) * (COL_ITEM_WIDTH + COL_PADDING) + COL_PADDING;
 					return {
 						files: dir.files,
+						types: dir.types,
 						style: { width: col_width + 'px' }
 					}
 				});

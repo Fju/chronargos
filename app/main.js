@@ -10,6 +10,7 @@ function createWindow() {
 		frame: false,
 		radii: [5, 5, 5, 5],
 		transparent: true,
+		opacity: 1,
 		width: 1000,
 		height: 640
 	});

@@ -18,12 +18,11 @@ document.addEventListener('wheel', e => {
 	var range = data.range_end - data.range_start;
 	if (range === 0) return;
 
-	var window_height = data.window_end - data.window_start;	
+	var window_height = data.window_end - data.window_start;
 	var sign = e.deltaY > 0 ? 1 : -1;
 
 	if (e.ctrlKey) {
-		var zoom = window_height !== 0 ? (range / window_height) : 1;
-	
+		var zoom = window_height !== 0 ? (range / window_height) : 1;	
 		var zoom_step = zoom;
 		
 		zoom = Math.max(1, zoom / Math.pow(1.33, sign));
@@ -59,7 +58,6 @@ document.addEventListener('wheel', e => {
 		console.log('scroll', data.window_start, data.window_end);
 	}
 });
-
 
 export function setRange(start, end) {
 	data.range_start = start;
