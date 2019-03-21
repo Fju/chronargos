@@ -1,0 +1,69 @@
+@import 'colors';
+
+.header {
+	padding-left: @timeline-width;
+	background: @background-controls;
+	color: @text-color;
+
+	text-align: center;
+
+	display: flex;
+	flex-direction: row;
+    align-items: stretch;
+    
+    border-bottom: 1px solid @border-color;
+    z-index: 2;  
+
+	font-size: 12px;
+
+    .header-item {
+        overflow: hidden;
+        border-right: 1px solid @border-color-bright;
+    }
+
+    .header-title {
+        padding: 0.25em 0.5em;
+    }
+
+    .header-button-group {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        
+        .header-button {
+            text-align: center;
+            cursor: pointer;
+            width: 20px;
+            padding: 3px;
+
+            &:hover {
+                background: @accent-black;
+            }
+            &.header-button-close:hover {
+                background: @accent-red;
+            }
+        }
+    }
+    .header-state {
+        height: 2px;
+        position: relative;
+        width: 100%;
+    }
+    .header-state-loader {
+        background: @accent-yellow;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        animation: header-state-loader-anim 1s infinite;
+
+        &[data-state="error"] {
+            background: @accent-red;
+            animation: none;
+        }
+        &[data-state="done"] {
+            display: none;
+        }
+    }
+}

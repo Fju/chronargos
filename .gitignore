@@ -2,4 +2,4 @@ node_modules/
 test/
 app/font/
 app/fontawesome/
-app/bundle.css
+app/dist/
