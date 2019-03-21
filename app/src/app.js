@@ -2,23 +2,30 @@ import Vue from 'vue';
 
 import TitleBar from './components/TitleBar.vue';
 import HeaderView from './components/HeaderView.vue';
+import FileView from './components/FileView.vue';
 
-import { directories } from './js/globals.js';
+import { data, setWindow, setRange } from './js/ui.js';
 
-directories.push({
+
+var start = Date.parse('2019-03-21');
+var end = Date.parse('2019-03-22');
+
+setRange(start, end);
+setWindow(start, end);
+
+data.directories.push({
 	name: 'test-long-dir-name',
 	types: [],
 	files: {},
 	state: 'loading'
 });
 
-//console.log(directories);
 
 new Vue({
 	el: '#app',
 	data: {
 		appName: 'chronargos'
 	},
-	components: { TitleBar, HeaderView }
+	components: { TitleBar, HeaderView, FileView }
 });
 

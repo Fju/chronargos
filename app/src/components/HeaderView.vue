@@ -14,13 +14,12 @@
 </template>
 
 <script>
-	import { directories, COL_PADDING, COL_ITEM_WIDTH } from '../js/globals.js';
+	import { COL_PADDING, COL_ITEM_WIDTH } from '../js/globals.js';
+	import { data } from '../js/ui.js';
 	
 	export default {
 		data () {
-			return {
-				directories: directories
-			}
+			return data;
 		},
 		methods: {
 			getHeaderItemStyle: dir => {
@@ -31,7 +30,7 @@
 				console.log('open settings');
 			},
 			onHeaderCloseClick: idx => {
-				console.log(idx);
+				data.directories.splice(idx, 1);
 			}
 		}
 	}
