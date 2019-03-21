@@ -1,13 +1,24 @@
 import Vue from 'vue';
 
-//import App from './App.vue';
 import TitleBar from './components/TitleBar.vue';
+import HeaderView from './components/HeaderView.vue';
+
+import { directories } from './js/globals.js';
+
+directories.push({
+	name: 'test-long-dir-name',
+	types: [],
+	files: {},
+	state: 'loading'
+});
+
+//console.log(directories);
 
 new Vue({
 	el: '#app',
 	data: {
 		appName: 'chronargos'
 	},
-	components: { TitleBar }
+	components: { TitleBar, HeaderView }
 });
 

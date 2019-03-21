@@ -6,7 +6,13 @@ let win;
 
 function createWindow() {
 	// Create the browser window.
-	win = new BrowserWindow({ frame: false, width: 1000, height: 640 });
+	win = new BrowserWindow({
+		frame: false,
+		radii: [5, 5, 5, 5],
+		transparent: true,
+		width: 1000,
+		height: 640
+	});
 
 	// and load the index.html of the app.
 	win.loadFile(__dirname + '/index.html');
