@@ -10,26 +10,11 @@
 </template>
 
 <script>
-	import { data } from '../js/ui.js';
-	
+	import { data, loadDirectory } from '../js/ui.js';
+		
 	export default {
 		methods: {
-			onOpenDirClick: () => {
-				var a = data.directories.push({
-					name: 'test-long-dir-name',
-					types: ['audio'],
-					files: {},
-					state: 'loading'
-				});
-
-				data.directories[a-1].files['audio'] = [
-					{
-						start: Date.parse('2019-03-21 08:00:00'),
-						end: Date.parse('2019-03-21 15:00:00'),
-						path: 'test'
-					}
-				];
-			}
+			onOpenDirClick: loadDirectory
 		}
 	}
 </script>

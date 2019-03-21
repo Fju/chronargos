@@ -7,12 +7,6 @@ import FooterView from './components/FooterView.vue';
 
 import { data, setWindow, setRange } from './js/ui.js';
 
-var start = Date.parse('2019-03-21');
-var end = Date.parse('2019-03-22');
-
-setRange(start, end);
-setWindow(start, end);
-
 new Vue({
 	el: '#app',
 	data: {

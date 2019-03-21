@@ -1,3 +1,5 @@
+import { openDirectory } from './files.js';
+
 var directories = [];
 
 export var data = {
@@ -55,7 +57,7 @@ document.addEventListener('wheel', e => {
 			data.window_start = Math.max(data.range_start, data.window_start + step);
 			data.window_end = data.window_start + window_height;
 		}
-		console.log('scroll', data.window_start, data.window_end);
+		//console.log('scroll', data.window_start, data.window_end);
 	}
 });
 
@@ -67,4 +69,52 @@ export function setRange(start, end) {
 export function setWindow(start, end) {
 	data.window_start = start;
 	data.window_end = end;
+}
+
+export function loadDirectory() {
+	openDirectory().forEach(dir => {
+		// create default object with the directory's name
+		var new_dir = {
+			name: dir.dirname,
+			types: [],
+			files: {},
+			state: 'loading'
+		}
+		
+		directories.push(new_dir);
+
+		dir.promise.then(async promises => {
+			// wait until all files' metadata has been read
+			var files = await Promise.all(promises);
+
+			var range_start = data.range_start;
+			var range_end = data.range_end;
+			
+			for (var file of files) {
+				// create new array for a specific file type if none already exists
+				if (!(file.type in new_dir.files)) new_dir.files[file.type] = [];
+				
+				var start = file.birthtime, end = start + file.duration * 1000;
+				
+				if (!range_start || range_start > start) range_start = start;
+				if (!range_end || range_end < end) range_end = end;
+
+				// add file to array
+				new_dir.files[file.type].push({
+					path: file.path,
+					start: start,
+					end: end
+				});
+			}
+
+			setRange(range_start, range_end);
+			setWindow(range_start, range_end);
+	
+			new_dir.state = 'done';
+			new_dir.types = Object.keys(new_dir.files);
+		}).catch(err => {
+			console.log('error', err);
+			new_dir.state = 'error';
+		});
+	});
 }

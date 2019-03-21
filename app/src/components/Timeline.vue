@@ -15,8 +15,6 @@
 		},
 		computed: {
 			timelineItems: function() {
-				//if (!this.$el) return [];
-	
 				var max_steps = !this.$el ? 8 : Math.floor(this.$el.offsetHeight / 600 * 8);
 
 				var range = this.window_end - this.window_start;
@@ -26,8 +24,6 @@
 				}
 				var nice_powers = [1000, 60000, 3600000]; // 1 second, 1 minute, 1 hour (unit: milliseconds)
 				var nice_steps = [0.5, 1, 2, 5, 10, 15]; // nice step sizes
-
-				console.log(this.$el);
 
 				var step = 0;
 				var i = 0, j = 0;

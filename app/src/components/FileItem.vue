@@ -14,9 +14,13 @@
 			return data;
 		},
 		methods: {
-			onDragStart: e => {
+			onDragStart: function(e) {
 				e.preventDefault();
+				e.dataTransfer.effectAllowed = 'copy';
+
+				console.log('drag', this.paths)
 			}
+			// TODO: Implement zoom on double-click
 		}
 	}
 </script>

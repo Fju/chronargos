@@ -8,9 +8,9 @@ function createWindow() {
 	// Create the browser window.
 	win = new BrowserWindow({
 		frame: false,
-		radii: [5, 5, 5, 5],
-		transparent: true,
-		opacity: 1,
+		//radii: [5, 5, 5, 5],
+		//transparent: true,
+		//opacity: 1,
 		width: 1000,
 		height: 640
 	});

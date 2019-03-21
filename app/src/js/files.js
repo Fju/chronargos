@@ -1,4 +1,4 @@
-
+// how can I do this with `import`?
 const { dialog } = require('electron').remote;
 
 const fs = require('fs');
@@ -7,35 +7,16 @@ const ffprobeStatic = require('ffprobe-static');
 const path = require('path');
 
 
+
 const SUPPORTED_FILETYPES = [
+	// TODO: extend this list
 	"mp4", "mp3"
 ];
+//TODO: create look up table for file types (e. g. mp3 -> audio, mov -> video)
+
 
 const MAX_DEPTH = 8;
 
-
-function openDirectory() {
-	// open file dialog where the user can select one or multiple directories
-	var dirs = dialog.showOpenDialog({ properties: ['openDirectory', 'multiSelections'] });
-
-	// no directory opened
-	if (!dirs) return [];
-	
-	// some javascript sorcery	
-		
-	var result = [];
-
-	dirs.forEach(dir => {
-		result.push({
-			// `loadDir` returns an promise that returns an array of promises which return a file's metadata
-			promise: loadDir(dir),
-			// return dirname so that a new column can be displayed with the current directory's name
-			dirname: path.basename(dir)	
-		});
-	});
-
-	return result;
-}
 function isSupported(extension) {
 	return SUPPORTED_FILETYPES.indexOf(extension) >= 0;
 }
@@ -69,12 +50,12 @@ function loadDir(dir, depth) {
 		// since birthtime and type are parameters they are finalized and don't change while waiting for the duration
 		return new Promise(async (resolve, reject) => {
 			// read video/audio duration
-			var info = await ffprobe(file, { path: ffprobeStatic.path });
+			var info = await ffprobe(path, { path: ffprobeStatic.path });
 			// return metadata
 			resolve({
 				birthtime: birthtime,
 				duration: parseInt(info.streams[0].duration),
-				path: file,
+				path: path,
 				type: type
 			});
 		});
@@ -85,7 +66,7 @@ function loadDir(dir, depth) {
 		
 		// get an array of files and directories inside the current directory
 		var files = await readdirPromise(dir);
-		for (file of files) {
+		for (var file of files) {
 			file = path.join(dir, file);
 			var stat = await statPromise(file);
 
@@ -106,6 +87,24 @@ function loadDir(dir, depth) {
 		// array of Promises, each of them handle a single file that is inside the directory or it's sub-directory.
 		// the Promises return the files information (birthtime, duration, path, type) and can be displayed in the timeline
 		resolve(promises);
+	});
+}
+
+export function openDirectory() {
+	// open file dialog where the user can select one or multiple directories
+	var dirs = dialog.showOpenDialog({ properties: ['openDirectory', 'multiSelections'] });
+
+	// no directory opened
+	if (!dirs) return [];
+	
+	var result = [];
+	return dirs.map(dir => {
+		return {
+			// `loadDir` returns an promise that returns an array of promises which return a file's metadata
+			promise: loadDir(dir),
+			// return dirname so that a new column can be displayed with the current directory's name
+			dirname: path.basename(dir)	
+		};
 	});
 }
 
