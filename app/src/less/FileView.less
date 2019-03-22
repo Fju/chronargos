@@ -1,0 +1,59 @@
+@import 'colors';
+
+.main {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+
+	overflow-x: auto;
+    overflow-y: hidden;
+
+	background: @background-main;  
+
+    .main-column {
+        position: relative;
+        border-right: 0.5px solid @border-color-bright;
+        pointer-events: none;
+    }
+
+    .main-item {
+        position: absolute;
+
+        border-radius: 5px;
+        z-index: 2;
+        box-shadow: 0 0 7px rgba(0, 0, 0, 0.4);
+        
+        pointer-events: auto;
+            
+        cursor: grab;
+        cursor: -moz-grab;
+        cursor: -webkit-grab;
+        &:active {
+            cursor: grabbing;
+            cursor: -moz-grabbing;
+            cursor: -webkit-grabbing;
+        }
+
+        &[data-type="video"] {
+            background: @accent-magenta;
+        }
+        &[data-type="audio"] {
+            background: @accent-green;
+        }   
+    }   
+    
+    .main-item-count {
+        color: #fff;
+        text-align: center;
+        position: absolute;
+        top: 50%;	
+        left: 0;
+        right: 0;
+        font-size: 0.95em;
+        font-weight: bold;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+}
+

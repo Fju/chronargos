@@ -1,0 +1,22 @@
+@import 'colors';
+
+.footer {
+	color: @text-color;
+    background: @background-controls;
+    border-top: 1px solid @border-color;
+
+	display: flex;
+	flex-direction: row;
+    justify-content: space-between;
+    
+    .footer-button {
+        max-width: 7em;
+        padding: 0.5em;
+        text-align: center;	
+        cursor: pointer;
+
+        &:hover {
+            background: @accent-black;
+        }
+    }    
+}

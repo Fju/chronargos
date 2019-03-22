@@ -1,0 +1,25 @@
+@import 'colors';
+
+.timeline {
+	position: relative;
+	background: @background-controls;
+	width: @timeline-width;
+    overflow: visible;
+
+    .timeline-item {
+        position: absolute;
+        left: 0;
+        height: 1px;
+        background: @background-controls;
+        width: 100vw;
+
+        span {
+            position: absolute;
+            text-align: center;
+            transform: translate(-50%, -50%) rotate(-90deg);
+            font-size: 12px;
+            left: 7px;            
+        }
+    }   
+}
+
