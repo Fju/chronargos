@@ -64,30 +64,33 @@ function loadDir(dir, depth) {
 
 	return new Promise(async (resolve, reject) => {
 		var promises = [];
-		
-		// get an array of files and directories inside the current directory
-		var files = await readdirPromise(dir);
-		for (var file of files) {
-			file = path.join(dir, file);
-			var stat = await statPromise(file);
+		try {
+			// get an array of files and directories inside the current directory
+			var files = await readdirPromise(dir);
 
-			
-			if (stat.isDirectory() && depth <= MAX_DEPTH) {
-				// recursion, go into the sub-directory and find all files in there
-				promises = promises.concat(await loadDir(file, depth + 1));
-			} else if (stat.isFile()) {
-				var extension = path.extname(file).substr(1);
-				if (!isSupported(extension)) continue;
+			for (var file of files) {
+				file = path.join(dir, file);
+				var stat = await statPromise(file);
+				
+				if (stat.isDirectory() && depth <= MAX_DEPTH) {
+					// recursion, go into the sub-directory and find all files in there
+					promises = promises.concat(await loadDir(file, depth + 1));
+				} else if (stat.isFile()) {
+					var extension = path.extname(file).substr(1);
+					if (!isSupported(extension)) continue;
 
-				var type = getType(extension), birthtime = Math.round(stat.birthtimeMs);
-				// add promise of current file to the array
-				promises.push(filePromise(file, birthtime, type));
+					var type = getType(extension), birthtime = Math.round(stat.birthtimeMs);
+					// add promise of current file to the array
+					promises.push(filePromise(file, birthtime, type));
+				}
 			}
-		}
 
-		// array of Promises, each of them handle a single file that is inside the directory or it's sub-directory.
-		// the Promises return the files information (birthtime, duration, path, type) and can be displayed in the timeline
-		resolve(promises);
+			// array of Promises, each of them handle a single file that is inside the directory or it's sub-directory.
+			// the Promises return the files information (birthtime, duration, path, type) and can be displayed in the timeline
+			resolve(promises);
+		} catch (err) {
+			reject(err);
+		}
 	});
 }
 
@@ -104,7 +107,7 @@ export function openDirectory() {
 			// `loadDir` returns an promise that returns an array of promises which return a file's metadata
 			promise: loadDir(dir),
 			// return dirname so that a new column can be displayed with the current directory's name
-			dirname: path.basename(dir)	
+			dirname: path.basename(dir) || dir	
 		};
 	});
 }
