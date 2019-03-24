@@ -6,6 +6,7 @@ const ffprobe = require('ffprobe');
 const ffprobeStatic = require('ffprobe-static');
 const path = require('path');
 
+console.log('ffprobe-static', ffprobeStatic.path);
 
 
 const SUPPORTED_FILETYPES = [
@@ -45,17 +46,17 @@ function statPromise(path) {
 function loadDir(dir, depth) {
 	if (!depth) depth = 0;
 
-	function filePromise(path, birthtime, type) {
+	function filePromise(file_path, birthtime, type) {
 		// helper function this fixes birthtime and duration being overwritten by other files in the async promise
 		// since birthtime and type are parameters they are finalized and don't change while waiting for the duration
 		return new Promise(async (resolve, reject) => {
 			// read video/audio duration
-			var info = await ffprobe(path, { path: ffprobeStatic.path });
+			var info = await ffprobe(file_path, { path: ffprobeStatic.path });
 			// return metadata
 			resolve({
 				birthtime: birthtime,
 				duration: parseInt(info.streams[0].duration),
-				path: path,
+				path: file_path,
 				type: type
 			});
 		});
@@ -80,7 +81,7 @@ function loadDir(dir, depth) {
 
 				var type = getType(extension), birthtime = Math.round(stat.birthtimeMs);
 				// add promise of current file to the array
-				promises.push(filePromise(path, birthtime, type));
+				promises.push(filePromise(file, birthtime, type));
 			}
 		}
 

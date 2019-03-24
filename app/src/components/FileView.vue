@@ -25,7 +25,7 @@
 						files: dir.files,
 						types: dir.types,
 						style: { width: col_width + 'px' }
-					}
+					};
 				});
 			}
 		},

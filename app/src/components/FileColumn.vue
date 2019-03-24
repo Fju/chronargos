@@ -28,7 +28,7 @@
 					for (var j = 0; j < this.files[type].length; ++j) {
 						var file = this.files[type][j];
 
-						var top = (file.start - this.window_start) / (this.window_end - this.window_start);				
+						var top = (file.start - this.window_start) / (this.window_end - this.window_start);
 						var height = (file.end - file.start) / (this.window_end - this.window_start);
 
 						var new_item = {

@@ -1,9 +1,8 @@
 import { openDirectory } from './files.js';
 
-var directories = [];
 
 export var data = {
-	directories: directories,
+	directories: [],
 	zoom: 1.0,
 	window_start: 0,
 	window_end: 0,
@@ -81,7 +80,9 @@ export function loadDirectory() {
 			state: 'loading'
 		}
 		
-		directories.push(new_dir);
+		data.directories.push(new_dir);
+
+		var new_files = {};
 
 		dir.promise.then(async promises => {
 			// wait until all files' metadata has been read
@@ -92,20 +93,22 @@ export function loadDirectory() {
 			
 			for (var file of files) {
 				// create new array for a specific file type if none already exists
-				if (!(file.type in new_dir.files)) new_dir.files[file.type] = [];
-				
+				if (!(file.type in new_files)) new_files[file.type] = [];
+
 				var start = file.birthtime, end = start + file.duration * 1000;
 				
 				if (!range_start || range_start > start) range_start = start;
 				if (!range_end || range_end < end) range_end = end;
 
 				// add file to array
-				new_dir.files[file.type].push({
+				new_files[file.type].push({
 					path: file.path,
 					start: start,
 					end: end
 				});
 			}
+
+			new_dir.files = new_files;
 
 			setRange(range_start, range_end);
 			setWindow(range_start, range_end);
