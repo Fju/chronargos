@@ -66,7 +66,19 @@
 				return items;
 			}
 		},
-		components: { FileItem }
+		components: { FileItem },
+		methods: {
+			/*onDoubleClick: function(e) {
+				//console.log(data.prev_window_start);
+				if (data.prev_window_start && this.prev_window_end) {
+					this.window_start = this.prev_window_start;
+					this.window_end = this.prev_window_end;
+
+					delete this.prev_window_start;
+					delete this.prev_window_end;
+				}
+			}*/
+		}
 	}
 </script>
 

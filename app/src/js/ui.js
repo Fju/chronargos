@@ -9,7 +9,6 @@ export var data = {
 	range_start: 0,
 	range_end: 0,
 	mouse_pos_y: 0,
-	prev_window: false
 }
 
 document.addEventListener('wheel', e => {
@@ -68,6 +67,20 @@ export function setRange(start, end) {
 export function setWindow(start, end) {
 	data.window_start = start;
 	data.window_end = end;
+}
+
+var focusedItem;
+var prev_window_start, prev_window_end;
+export function doubleClickZoom(item) {
+	if (focusedItem !== item) {
+		prev_window_start = data.window_start;
+		prev_window_end = data.window_end;
+		focusedItem = item;
+		setWindow(item.start, item.end);		
+	} else {
+		focusedItem = null;
+		setWindow(prev_window_start, prev_window_end);
+	}
 }
 
 export function loadDirectory() {

@@ -31,8 +31,8 @@
 		},
 		methods: {
 			// save mouse position for scrolling
-			onMousemove: (e) => {
-				data.mouse_pos_y = e.offsetY / e.target.clientHeight;
+			onMousemove: function(e) {
+				this.mouse_pos_y = e.offsetY / e.target.clientHeight;
 			}
 		},
 		components: { FileColumn, Timeline }
