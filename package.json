@@ -1,5 +1,6 @@
 {
   "name": "chronargos",
+  "productName": "chronargos",
   "version": "0.0.1",
   "description": "Assistant for chornologically sorting videos from multiple local sources, that supports dragging and dropping files into other applications.",
   "author": "https://github.com/Fju",
@@ -19,6 +20,7 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.3",
     "css-loader": "^0.28.10",
+    "electron-packager": "^13.1.1",
     "vue-loader": "^14.2.2",
     "vue-template-compiler": "^2.6.9",
     "webpack": "^4.29.6",

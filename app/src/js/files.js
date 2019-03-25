@@ -1,22 +1,17 @@
-// how can I do this with `import`?
-const { dialog } = require('electron').remote;
+import fs from 'fs';
+import ffprobe from 'ffprobe';
+import ffprobeStatic from 'ffprobe-static';
+import path from 'path';
 
-const fs = require('fs');
-const ffprobe = require('ffprobe');
-const ffprobeStatic = require('ffprobe-static');
-const path = require('path');
-
-console.log('ffprobe-static', ffprobeStatic.path);
-
+import { remote } from 'electron';
 
 const SUPPORTED_FILETYPES = [
 	// TODO: extend this list
-	"mp4", "mp3"
+	"mp4", "mp3", "mov"
 ];
 //TODO: create look up table for file types (e. g. mp3 -> audio, mov -> video)
 
-
-const MAX_DEPTH = 8;
+const MAX_DEPTH = 4;
 
 function isSupported(extension) {
 	return SUPPORTED_FILETYPES.indexOf(extension) >= 0;
@@ -96,7 +91,7 @@ function loadDir(dir, depth) {
 
 export function openDirectory() {
 	// open file dialog where the user can select one or multiple directories
-	var dirs = dialog.showOpenDialog({ properties: ['openDirectory', 'multiSelections'] });
+	var dirs = remote.dialog.showOpenDialog({ properties: ['openDirectory', 'multiSelections'] });
 
 	// no directory opened
 	if (!dirs) return [];
