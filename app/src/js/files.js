@@ -5,19 +5,21 @@ import path from 'path';
 
 import { remote } from 'electron';
 
-const SUPPORTED_FILETYPES = [
-	// TODO: extend this list
-	"mp4", "mp3", "mov"
-];
-//TODO: create look up table for file types (e. g. mp3 -> audio, mov -> video)
+const FILETYPES = {
+	'mp4': 'video',
+	'mov': 'video',
+	'mp3': 'audio'
+};
+const FILE_EXTENSIONS = Object.keys(FILETYPES);
+
 
 const MAX_DEPTH = 4;
 
 function isSupported(extension) {
-	return SUPPORTED_FILETYPES.indexOf(extension) >= 0;
+	return FILE_EXTENSIONS.indexOf(extension) >= 0;
 }
 function getType(extension) {
-	return extension === 'mp4' ? 'video' : 'audio';
+	return FILETYPES[extension];
 }
 function readdirPromise(path) {
 	// promise wrapper for asynchronous readdir function

@@ -90,7 +90,8 @@ export function loadDirectory() {
 			name: dir.dirname,
 			types: [],
 			files: {},
-			state: 'loading'
+			state: 'loading',
+			edit: false
 		}
 		
 		data.directories.push(new_dir);
