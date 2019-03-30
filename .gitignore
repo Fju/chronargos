@@ -2,5 +2,5 @@ node_modules/
 test/
 app/font/
 app/fontawesome/
-app/dist/
 build/
+bin/

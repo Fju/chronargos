@@ -11,9 +11,9 @@ const FILETYPES = {
 	'mp3': 'audio'
 };
 const FILE_EXTENSIONS = Object.keys(FILETYPES);
-
-
 const MAX_DEPTH = 4;
+
+var ffprobe_local_path = FFPROBE_PATH || ffprobeStatic.path;
 
 function isSupported(extension) {
 	return FILE_EXTENSIONS.indexOf(extension) >= 0;
@@ -21,6 +21,8 @@ function isSupported(extension) {
 function getType(extension) {
 	return FILETYPES[extension];
 }
+
+
 function readdirPromise(path) {
 	// promise wrapper for asynchronous readdir function
 	return new Promise((resolve, reject) => {
@@ -48,7 +50,7 @@ function loadDir(dir, depth) {
 		// since birthtime and type are parameters they are finalized and don't change while waiting for the duration
 		return new Promise(async (resolve, reject) => {
 			// read video/audio duration
-			var info = await ffprobe(file_path, { path: ffprobeStatic.path });
+			var info = await ffprobe(file_path, { path: ffprobe_local_path });
 			// return metadata
 			resolve({
 				birthtime: birthtime,

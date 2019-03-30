@@ -13,14 +13,15 @@
   "license": "GNU GPLv3",
   "main": "app/main.js",
   "scripts": {
-    "start": "webpack --mode development; lessc app/src/less/main.less app/dist/bundle.css; electron .",
+    "start": "node bundle.js development; electron .",
+    "package-linux": "electron-packager ./ --plattform=linux --arch=x64 --out=build --asar --overwrite",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.3",
-    "css-loader": "^0.28.10",
     "electron-packager": "^13.1.1",
+    "less": "^3.9.0",
     "vue-loader": "^14.2.2",
     "vue-template-compiler": "^2.6.9",
     "webpack": "^4.29.6",
