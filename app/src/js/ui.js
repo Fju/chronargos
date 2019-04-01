@@ -91,7 +91,7 @@ export function loadDirectory() {
 			types: [],
 			files: {},
 			state: 'loading',
-			edit: false
+			edit: false			
 		}
 		
 		data.directories.push(new_dir);

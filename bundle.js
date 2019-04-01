@@ -15,6 +15,7 @@ if (mode !== 'development' && mode !== 'production') {
 }
 
 var webpackConfig = {
+	mode: mode,
 	entry: './app/src/app.js',
 	output: {
 		path: path.resolve(__dirname, 'app/dist'),
@@ -45,25 +46,61 @@ var webpackConfig = {
 	},
 	plugins: [
 		new webpack.DefinePlugin({
-			FFPROBE_PATH: JSON.stringify(build ? '' : 'ffprobe')
+			FFPROBE_PATH: JSON.stringify(build ? 'ffrobe' : '')
 		})
 	]
 }
 
-webpackConfig.mode = mode;
+function bundle_js() {
+	return new Promise((resolve, reject) => {
+		webpack(webpackConfig, (err, stats) => {
+			if (err) {
+				reject(err);
+				return;
+			}			
+			console.log(stats.toString({ colors: true }));
+			resolve();
+		});
+	});
+}
 
-webpack(webpackConfig, (err, stats) => {
-	if (err) console.log(err);
-	console.log(stats.toString({ colors: true }));
-});
+function bundle_css() {
+	const LESS_OPTIONS = { paths: [ './app/src/less/' ], compress: mode === 'production' };
+	return new Promise((resolve, reject) => {
+		// bundles less files into a single bundled css file
+		fs.readFile('./app/src/less/main.less', (err, data) => {
+			if (err) {
+				reject(err);
+				return;
+			}
+			less.render(data.toString(), LESS_OPTIONS, (err, output) => {
+				if (err) {
+					reject(err);
+					return;
+				}
+				fs.writeFileSync('./app/dist/bundle.css', output.css);
+				console.log('css successfully bundled.');
+				resolve();
+			});
+		});
+	});
+}
 
-// bundles less files into a single bundled css file
-less.render(
-	fs.readFileSync('./app/src/less/main.less').toString(),
-	{ paths: [ './app/src/less/' ], compress: mode === 'production' },
-	(err, output) => {
-		if (!err) fs.writeFileSync('./app/dist/bundle.css', output.css);
-		else console.log('error writing css file');
+function build_app(platform, arch) {
+	packager({
+		platform: platform,
+		arch: arch,
+		dir: './',
+		out: 'build/',
+		overwrite: true
+	});
+}
+
+Promise.all([bundle_css(), bundle_js()]).then(() => {
+	if (build) {
+		build_app('linux', 'x64');	
 	}
-);
+}).catch(err => {
+	console.log(err);
+});
 

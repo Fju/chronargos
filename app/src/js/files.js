@@ -13,6 +13,8 @@ const FILETYPES = {
 const FILE_EXTENSIONS = Object.keys(FILETYPES);
 const MAX_DEPTH = 4;
 
+console.log(FFPROBE_PATH);
+
 var ffprobe_local_path = FFPROBE_PATH || ffprobeStatic.path;
 
 function isSupported(extension) {
