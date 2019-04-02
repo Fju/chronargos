@@ -4,7 +4,7 @@
 			<i class="fas fa-folder-open"></i> Open dir
 		</div>
 		<div class="footer-button" v-on:click="onSettingsClick">
-			<i class="fas fa-cog"></i>
+			<i class="fas fa-cog"></i> Preferences
 		</div>
 	</div>
 </template>
