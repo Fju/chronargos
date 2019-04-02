@@ -3,6 +3,8 @@ import ffprobe from 'ffprobe';
 import ffprobeStatic from 'ffprobe-static';
 import path from 'path';
 
+import os from 'os';
+
 import { remote } from 'electron';
 
 const FILETYPES = {
@@ -13,9 +15,10 @@ const FILETYPES = {
 const FILE_EXTENSIONS = Object.keys(FILETYPES);
 const MAX_DEPTH = 4;
 
-console.log(FFPROBE_PATH);
 
-var ffprobe_local_path = FFPROBE_PATH || ffprobeStatic.path;
+var ffprobe_local_path = ''; 
+if (IS_BUILD) ffprobe_local_path = os.platform() === 'win32' ? 'ffprobe.exe' : 'ffprobe';
+else ffprobe_local_path = ffprobeStatic.path;
 
 function isSupported(extension) {
 	return FILE_EXTENSIONS.indexOf(extension) >= 0;

@@ -12,7 +12,8 @@ function createWindow() {
 		//transparent: true,
 		//opacity: 1,
 		width: 1000,
-		height: 640
+		height: 640,
+		backgroundColor: '#292c33'
 	});
 
 	// and load the index.html of the app.
@@ -50,9 +51,7 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
 	// On macOS it's common to re-create a window in the app when the
 	// dock icon is clicked and there are no other windows open.
-	if (win === null) {
-		createWindow();
-	}
+	if (win === null) createWindow();
 });
 
 // In this file you can include the rest of your app's specific main process

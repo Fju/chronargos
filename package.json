@@ -14,7 +14,7 @@
   "main": "app/main.js",
   "scripts": {
     "start": "node bundle.js development; electron .",
-    "package-linux": "electron-packager ./ --plattform=linux --arch=x64 --out=build --asar --overwrite",
+    "build": "node bundle.js production build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {

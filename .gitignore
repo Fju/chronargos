@@ -3,4 +3,5 @@ test/
 app/font/
 app/fontawesome/
 build/
+app/dist/
 bin/

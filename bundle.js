@@ -46,7 +46,7 @@ var webpackConfig = {
 	},
 	plugins: [
 		new webpack.DefinePlugin({
-			FFPROBE_PATH: JSON.stringify(build ? 'ffrobe' : '')
+			IS_BUILD: JSON.stringify(build)
 		})
 	]
 }
@@ -93,12 +93,23 @@ function build_app(platform, arch) {
 		dir: './',
 		out: 'build/',
 		overwrite: true
+	}).then(appPaths => {
+		console.log('appPaths', appPaths);
+
+		var ffprobe_name = platform === 'win32' ? 'ffprobe.exe' : 'ffprobe';
+		var module_path = path.join(__dirname, 'node_modules/ffprobe-static/bin/', platform, arch, ffprobe_name);
+	
+		var rel_path = path.relative(path.join(__dirname, appPaths[0]), module_path)
+		
+		fs.symlinkSync(rel_path, path.join(appPaths[0], ffprobe_name));
+	}).catch(err => {
+		console.log(err);
 	});
 }
 
 Promise.all([bundle_css(), bundle_js()]).then(() => {
 	if (build) {
-		build_app('linux', 'x64');	
+		build_app('linux', 'x64');
 	}
 }).catch(err => {
 	console.log(err);
