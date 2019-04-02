@@ -3,7 +3,7 @@
 		<div class="footer-button" id="open-dir" v-on:click="onOpenDirClick">
 			<i class="fas fa-folder-open"></i> Open dir
 		</div>
-		<div class="footer-button">
+		<div class="footer-button" v-on:click="onSettingsClick">
 			<i class="fas fa-cog"></i>
 		</div>
 	</div>
@@ -14,7 +14,10 @@
 		
 	export default {
 		methods: {
-			onOpenDirClick: loadDirectory
+			onOpenDirClick: loadDirectory,
+			onSettingsClick: function() {
+				this.$root.$refs.settingsOverlay.show();
+			}
 		}
 	}
 </script>
