@@ -11,7 +11,8 @@ function createWindow() {
 		//radii: [5, 5, 5, 5],
 		//transparent: true,
 		//opacity: 1,
-		width: 1000,
+		width: 300,
+		minWidth: 300,
 		height: 640,
 		backgroundColor: '#292c33'
 	});
@@ -22,9 +23,6 @@ function createWindow() {
 	win.setMenuBarVisibility(false)
 	//win.setMenu(null);
 	
-	// Open the DevTools.
-	win.webContents.openDevTools();
-
 	// Emitted when the window is closed.
 	win.on('closed', () => {
 		// Dereference the window object, usually you would store windows

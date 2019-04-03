@@ -15,7 +15,7 @@
 				</p>
 			</div>
 			<div class="settings-button-group">
-				<button>Apply changes</button>
+				<button v-on:click="onApplyClick">Apply changes</button>
 				<button>Restore defaults</button>
 			</div>
 		</div>
@@ -28,21 +28,17 @@
 	export default {
 		data() {
 			return {
-				dock_choices: [
-					{ title: 'Don\'t dock', desc: 'Position window manually where you want it to be' },
-		   			{ title: 'Dock right', desc: 'Window is locked to the right side of the screen' },
-					{ title: 'Dock left', desc: 'Window is locked to the left side of the screen'}			
-				],
-				display_choices: [
-					{ title: 'Display 0 (Primary)', desc: '' },
-					{ title: 'Display 1', desc: '' }
-				],
+				dock_choices: dock.dock_choices,
+				display_choices: dock.display_choices,
 				visible: false
 			};
 		},
 		methods: {
 			show: function() {
 				this.visible = true;
+			},
+			onApplyClick: function() {
+				dock.setWindowLocation();
 			}
 		},
 		components: { MultipleChoiceInput }

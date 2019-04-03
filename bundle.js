@@ -46,6 +46,7 @@ var webpackConfig = {
 	},
 	plugins: [
 		new webpack.DefinePlugin({
+			IS_DEV: JSON.stringify(mode === 'development'),
 			IS_BUILD: JSON.stringify(build)
 		})
 	]

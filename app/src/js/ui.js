@@ -1,5 +1,12 @@
 import { openDirectory } from './files.js';
+import { remote } from 'electron';
 
+
+if (IS_DEV) {
+	var win = remote.getCurrentWindow();
+	win.openDevTools();
+	win.setSize(1000, 640);
+}
 
 export var data = {
 	directories: [],
