@@ -11,16 +11,25 @@
 		props: ['choices'],
 		data() {
 			return {
-				selectedIndex: 0,
+				selectedIndex: 0
+			}
+		},
+		watch: {
+			choices: function() {
+				if (this.selectedIndex >= this.choices.length) {
+					// out of bounds
+					this.selectedIndex = -1;
+				}
 			}
 		},
 		methods: {
 			select: function(idx) {
-				this.selectedIndex = idx;				
+				this.selectedIndex = idx;
 			},
-			getSelected: function() {
-				return '';			 
-			} 
+			getValue: function() {
+				if (this.selectedIndex === -1) return;
+				return this.choices[this.selectedIndex].value;
+			}
 		}
 	}
 </script>

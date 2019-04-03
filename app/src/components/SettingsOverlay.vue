@@ -6,12 +6,17 @@
 				<h1>Preferences</h1>
 				<p>
 					<h2>Dock mode</h2>
-					<multiple-choice-input :choices="dock_choices"></multiple-choice-input>
+					<multiple-choice-input :choices="dock_choices" ref="dock_choices"></multiple-choice-input>
 				</p>
 				
 				<p>
 					<h2>Dock on display</h2>
-					<multiple-choice-input :choices="display_choices"></multiple-choice-input>
+					<multiple-choice-input :choices="display_choices" ref="display_choices"></multiple-choice-input>
+				</p>
+				<p></p>
+				<p>
+					<h2>Other options</h2>
+					<a href="asdf">Report bugs</a>
 				</p>
 			</div>
 			<div class="settings-button-group">
@@ -38,6 +43,12 @@
 				this.visible = true;
 			},
 			onApplyClick: function() {
+				var new_dock_mode = this.$refs.dock_choices.getValue();
+				var new_display_id = this.$refs.display_choices.getValue();
+
+				if (new_dock_mode !== undefined) dock.dock_mode = new_dock_mode;
+				if (new_display_id !== undefined) dock.display_id = new_display_id;
+
 				dock.setWindowLocation();
 			}
 		},
