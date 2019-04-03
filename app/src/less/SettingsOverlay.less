@@ -22,7 +22,7 @@
 	.settings-box {
 		background: @background-main;
 		padding: 1em;
-		min-width: 300px;
+		min-width: 250px;
 		width: 90vw;
 		max-width: 500px;
 		height: 500px;
@@ -30,10 +30,35 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
+		border-radius: 3px;
 
-		.settings-title {
-			font-size: 18px;
-			font-weight: bold;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+
+		.settings-main {
+			flex-grow: 1;
+
+			h1 {
+				font-size: 18px;
+				margin: 0;
+				margn-bottom: 6px;
+			}
+			h2 {
+				margin: 0;
+				margin-bottom: 6px;
+				font-size: 14px;
+			}
+		}
+		
+		.settings-button-group {
+			display: flex;
+			flex-direction: row;
+			justify-content: flex-end;
+		
+			button:first-child {
+				margin-right: 8px;
+			}
 		}
 	}
 }

@@ -1,32 +1,62 @@
 @import 'colors';
 
+
+@background-controls-hover: darken(@background-controls, 5%);
+
 .multiple-choice-input {
 	margin: 4px 0;
 
-	display: inline-flex;
-	
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+		
 	.multiple-choice-item {
 		flex-grow: 1;
 		padding: 8px;
-		border: 1px solid @background-controls;
-		background: rgba(0,0,0,0.1);
+		border: 1px solid @border-color;
+		background: @background-controls;
+		cursor: pointer;
 
 		&:hover {
-			border-color: @accent-blue;
-			background: @background-controls;
-			color: @accent-blue;			
+			background: @background-controls-hover;
 		}
 		&:first-child {
 			border-top-left-radius: 3px;
-			border-bottom-left-radius: 3px;
+			border-top-right-radius: 3px;
 		}
 		&:last-child {
-			border-top-right-radius: 3px;
+			border-bottom-left-radius: 3px;
 			border-bottom-right-radius: 3px;
+		}
+		&.selected {
+			border-color: @accent-yellow;
+			color: @accent-yellow;
+		}
+
+		.multiple-choice-title {
+			font-weight: bold;
 		}
 
 		span {
 			font-size: 12px;
 		}
+	}
+}
+
+button {
+	cursor: pointer;
+	outline: none;
+	border: 1px solid @border-color;
+	border-radius: 3px;
+	background: @background-controls;
+	color: @text-color;
+	padding: 6px 12px;
+
+	&:hover {
+		background: @background-controls-hover;
+	}
+	&:active {
+		background: @accent-yellow;
+		color: @background-controls;
 	}
 }
