@@ -20,9 +20,9 @@ var dock = {
 		} else if (this.dock_mode === DOCK_RIGHT) {
 			x = display.workArea.x + display.workArea.width - width;
 		} else {
-			win.setSize(width, 640);
-			win.center();
-			return;
+			//win.setSize(width, 640);
+			//win.center();
+			//return;
 		}
 
 		win.setBounds({

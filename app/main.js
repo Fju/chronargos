@@ -14,7 +14,8 @@ function createWindow() {
 		width: 300,
 		minWidth: 300,
 		height: 640,
-		backgroundColor: '#292c33'
+		backgroundColor: '#292c33',
+		skipTaskbar: true
 	});
 
 	// and load the index.html of the app.
