@@ -16,7 +16,7 @@
 				<p></p>
 				<p>
 					<h2>Other options</h2>
-					<a href="asdf">Report bugs</a>
+					<a href="" v-on:click.prevent="openLink('https://github.com/Fju/chronargos/issues')">Report bugs</a>
 				</p>
 			</div>
 			<div class="settings-button-group">
@@ -29,6 +29,7 @@
 <script>
 	import MultipleChoiceInput from './MultipleChoiceInput.vue';
 	import dock from '../js/dock.js';
+	import { shell } from 'electron';
 
 	export default {
 		data() {
@@ -50,6 +51,9 @@
 				if (new_display_id !== undefined) dock.display_id = new_display_id;
 
 				dock.setWindowLocation();
+			},
+			openLink: function(href) {
+				shell.openExternal(href);
 			}
 		},
 		components: { MultipleChoiceInput }
