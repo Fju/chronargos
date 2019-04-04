@@ -1,6 +1,10 @@
 <template>
 	<div class="main" v-on:mousemove="onMousemove">
 		<timeline v-if="directories.length > 0"></timeline>
+		<div class="main-hint" v-else>
+			<!-- show only if no directory has been opened yet -->
+			Click on <b><i class="fas fa-folder-open"></i> Open folder</b> to list all video and audio files in that directory in a timeline
+		</div>
 		<file-column v-for="dir in fileColumns" :key="dir.id" :style="dir.style" v-bind:files="dir.files" :types="dir.types"></file-column>
 	</div>
 </template>

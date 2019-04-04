@@ -7,7 +7,19 @@
 	align-items: stretch;
 	overflow-x: auto;
     overflow-y: hidden;
-	background: @background-main;  
+	background: @background-main;
+
+	.main-hint {
+		width: 50%;
+		min-width: 150px;
+		color: fade(@text-color, 50%);
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		text-align: center;
+		line-height: 1.25;
+	} 
 
     .main-column {
         position: relative;

@@ -1,7 +1,7 @@
 <template>
 	<div class="footer">
 		<div class="footer-button" id="open-dir" v-on:click="onOpenDirClick">
-			<i class="fas fa-folder-open"></i> Open dir
+			<i class="fas fa-folder-open"></i> Open folder
 		</div>
 		<div class="footer-button" v-on:click="onSettingsClick">
 			<i class="fas fa-cog"></i> Preferences

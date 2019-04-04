@@ -3,6 +3,7 @@
 		<div class="settings-cancel-area" v-on:click="visible = false"></div>
 		<div class="settings-box">
 			<div class="settings-main">
+				<div class="settings-close" v-on:click="visible = false"><i class="fas fa-times"></i></div>
 				<h1>Preferences</h1>
 				<p>
 					<h2>Dock mode</h2>
@@ -21,7 +22,7 @@
 			</div>
 			<div class="settings-button-group">
 				<button v-on:click="onApplyClick">Apply changes</button>
-				<button>Restore defaults</button>
+				<!--<button>Restore defaults</button>-->
 			</div>
 		</div>
 	</div>
