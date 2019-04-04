@@ -1,6 +1,6 @@
 # chronargos
 
-Minimal assistant for improving video editing workflow that sorts video files from multiple sources chronologically in a timeline.
+Minimal assistant for improving video editing workflow. List the video and audio files you work with in a timeline, to get a quick and easy overview of files from multiple sources.
 
 ## Features
 
