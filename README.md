@@ -1,5 +1,7 @@
 # chronargos
 
+![chronargos logo](app/images/chronargos_logo.png)
+
 Minimal assistant for improving video editing workflow. List the video and audio files you work with in a timeline, to get a quick and easy overview of files from multiple sources.
 
 ## Features
