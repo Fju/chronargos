@@ -16,9 +16,7 @@ function createWindow() {
 		height: 640,
 		backgroundColor: '#292c33',
 		skipTaskbar: true,
-		/*'web-preferences': {
-			'enable-drag-out': true
-		}*/
+		icon: __dirname + '/images/icon_64x64.png'
 	});
 
 	// and load the index.html of the app.
@@ -35,7 +33,8 @@ function createWindow() {
 		win = null;
 	});
 
-	var appTray = new Tray(__dirname + '/images/chronargos_logo.png');
+	// create tray icon
+	var appTray = new Tray(__dirname + '/images/icon_48x48.png');
 	appTray.setToolTip('chronargos');
 	appTray.on('click', () => {
 		if (win.isMinimized()) win.restore();

@@ -1,6 +1,6 @@
 # chronargos
 
-![chronargos logo](app/images/chronargos_logo.png)
+![chronargos logo](app/images/chronargos_logo.svg)
 
 Minimal assistant for improving video editing workflow. List the video and audio files you work with in a timeline, to get a quick and easy overview of files from multiple sources.
 
@@ -48,11 +48,14 @@ app
         ├── main.less
         └── ...
 ```
+
 - `app/main.js` is the entry point for electron and creates the BrowserWindow that hosts `app/index.html`
 - `app/src/app.js` is the entry point for the Javascript logic. It creates the main Vue element which gets mounted on the `#app` element defined in `app/index.html`. All components can be found in `app/src/components/` and are loaded by the `app/src/app.js` script or by other components.
 - `app/src/less/main.less` is the entry point for the styling.
 
-For bundling, there is a node script in main directory, which bundles the Javascript (Vue framework, Vue components, node modules and javascript files from `app/src/js/`) to `app/dist/bundle.js` using webpack and the LESS files to `app/dist/bundle.css` using the LESS node module.
+For bundling, there is a node script in the main directory, which bundles the Javascript (Vue framework, Vue components, node modules and javascript files from `app/src/js/`) to `app/dist/bundle.js` using webpack. The LESS files are bundled to `app/dist/bundle.css` using the LESS node module.
+
+One can switch between production or development mode by passing an argument to the bundle script:
 ``` sh
 # bundle in development mode, doesn't compress code, easier to read and to debug
 node bundle.js development

@@ -93,7 +93,9 @@ function build_app(platform, arch) {
 		arch: arch,
 		dir: './',
 		out: 'build/',
-		overwrite: true
+		overwrite: true,
+		//TODO: use icon.icns for macOS
+		icon: path.join(__dirname, 'app/images/icon.ico')
 	}).then(appPaths => {
 		console.log('appPaths', appPaths);
 
