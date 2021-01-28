@@ -28,7 +28,7 @@
     "webpack-cli": "^3.3.0"
   },
   "dependencies": {
-    "electron": "^4.0.1",
+    "electron": "^9.4.0",
     "ffprobe": "^1.1.0",
     "ffprobe-static": "^3.0.0",
     "npm": "^6.13.4",
