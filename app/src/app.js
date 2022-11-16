@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 
 import TitleBar from './components/TitleBar.vue';
 import HeaderView from './components/HeaderView.vue';
@@ -8,11 +8,10 @@ import SettingsOverlay from './components/SettingsOverlay.vue';
 
 import { data, setWindow, setRange } from './js/ui.js';
 
-new Vue({
-	el: '#app',
+createApp({
 	data: {
 		appName: 'chronargos'
 	},
 	components: { TitleBar, HeaderView, FileView, FooterView, SettingsOverlay },
-});
+}).mount('#app');
 

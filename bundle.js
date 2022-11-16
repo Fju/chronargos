@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const packager = require('electron-packager');
 
+const { VueLoaderPlugin } = require('vue-loader');
+
 //const webpackConfig = require('./webpack.config.js');
 
 var mode = process.argv[2];
@@ -26,18 +28,13 @@ var webpackConfig = {
 		__dirname: true
 	},
 	resolve: {
-		alias: {
+		/*alias: {
 			vue: 'vue/dist/vue.esm.js'
-		}
+		}*/
 	},
 	target: 'electron-renderer',
 	module: {
 		rules: [
-			{
-				test: /\.js$/,
-				loader: 'babel-loader',
-				exclude: /node_modules/
-			},
 			{
 				test: /\.vue$/,
 				loader: 'vue-loader'
@@ -48,7 +45,8 @@ var webpackConfig = {
 		new webpack.DefinePlugin({
 			IS_DEV: JSON.stringify(mode === 'development'),
 			IS_BUILD: JSON.stringify(build)
-		})
+		}),
+		new VueLoaderPlugin()
 	]
 }
 
