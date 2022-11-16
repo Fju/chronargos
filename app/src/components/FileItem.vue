@@ -6,7 +6,7 @@
 
 <script>
 	import { data, doubleClickZoom } from '../js/ui.js';
-	import { ipcRenderer } from 'electron';
+	//import { ipcRenderer } from 'electron';
 
 	export default {
 		props: ['paths', 'type', 'start', 'end'],
@@ -19,7 +19,7 @@
 				e.dataTransfer.effectAllowed = 'copy';
 
 				//e.dataTransfer.setData('electron/file-paths', this.paths.join(path.delimiter));
-				ipcRenderer.send('ondragstart', this.paths);
+				//ipcRenderer.send('ondragstart', this.paths);
 				//console.log('drag', this.paths);
 			},
 			onDoubleClick: function(e) {

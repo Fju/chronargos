@@ -1,12 +1,12 @@
 import { openDirectory } from './files.js';
-import { remote } from 'electron';
+/*import { remote } from 'electron';
 
 
 if (IS_DEV) {
 	var win = remote.getCurrentWindow();
 	win.openDevTools();
 	win.setSize(1000, 640);
-}
+}*/
 
 export var data = {
 	directories: [],
@@ -90,8 +90,8 @@ export function doubleClickZoom(item) {
 	}
 }
 
-export function loadDirectory() {
-	openDirectory().forEach(dir => {
+export async function loadDirectory() {
+	/*openDirectory().forEach(dir => {
 		// create default object with the directory's name
 		var new_dir = {
 			name: dir.dirname,
@@ -140,6 +140,10 @@ export function loadDirectory() {
 			console.log('error', err);
 			new_dir.state = 'error';
 		});
-	});
+	});*/
+
+	const paths = await openDirectory();
+	console.log(paths[0])
+	console.log(await window.api.getFFProbeMetadata(paths[0] + '/test.mp4'));
 }
 

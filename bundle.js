@@ -27,12 +27,7 @@ var webpackConfig = {
 		// neccessary for ffprobe-static
 		__dirname: true
 	},
-	resolve: {
-		/*alias: {
-			vue: 'vue/dist/vue.esm.js'
-		}*/
-	},
-	target: 'electron-renderer',
+	target: 'web',
 	module: {
 		rules: [
 			{

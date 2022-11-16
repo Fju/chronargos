@@ -1,11 +1,10 @@
-import fs from 'fs';
+/*import fs from 'fs';
 import ffprobe from 'ffprobe';
 import ffprobeStatic from 'ffprobe-static';
 import path from 'path';
 
 import os from 'os';
 
-import { remote } from 'electron';
 
 const FILETYPES = {
 	'mp4': 'video',
@@ -96,23 +95,22 @@ function loadDir(dir, depth) {
 			reject(err);
 		}
 	});
-}
+}*/
 
-export function openDirectory() {
-	// open file dialog where the user can select one or multiple directories
-	var dirs = remote.dialog.showOpenDialog({ properties: ['openDirectory', 'multiSelections'] });
+export async function openDirectory() {
+	const result = await window.api.openDirectoryDialog();
 
-	// no directory opened
-	if (!dirs) return [];
-	
-	var result = [];
-	return dirs.map(dir => {
-		return {
+	if (result.canceled) return [];
+
+	return result.filePaths;
+
+	//return dirs.map(dir => {
+	//	return {
 			// `loadDir` returns an promise that returns an array of promises which return a file's metadata
-			promise: loadDir(dir),
+	//		promise: loadDir(dir),
 			// return dirname so that a new column can be displayed with the current directory's name
-			dirname: path.basename(dir) || dir	
-		};
-	});
+	//		dirname: path.basename(dir) || dir	
+	//};
+	//});
 }
 

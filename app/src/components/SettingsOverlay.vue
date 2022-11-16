@@ -29,8 +29,9 @@
 </template>
 <script>
 	import MultipleChoiceInput from './MultipleChoiceInput.vue';
-	import dock from '../js/dock.js';
-	import { shell } from 'electron';
+	//import dock from '../js/dock.js';
+	//import { shell } from 'electron';
+	const shell = {};
 
 	export default {
 		data() {

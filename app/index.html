@@ -1,16 +1,13 @@
+<!DOCTYPE html>
 <html>
-
 <head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval'">
 	<link rel="stylesheet" href="dist/bundle.css" type="text/css" />
 	<link rel="stylesheet" href="fontawesome/css/all.css" type="text/css" />
 </head>
 <body>
 	<div id="app">
-		<title-bar :app-name="appName"></title-bar>
-		<header-view></header-view>
-		<file-view></file-view>
-		<footer-view></footer-view>
-		<settings-overlay ref="settingsOverlay"></settings-overlay>
 	</div>
 </body>
 <script src="dist/bundle.js"></script>
